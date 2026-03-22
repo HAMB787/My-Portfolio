@@ -1,77 +1,80 @@
-# Lab 1: Exhaustive Search Method
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.optimize import minimize_scalar
 
-# Define the interval [A, B] for the search
-A = 0.5
-B = 4
+# --- Configuration & Constants ---
+A = 0.5  # Start of interval
+B = 4    # End of interval
+N = 7    # Number of intervals (divisions)
+EPS = 0.5 # Error tolerance (epsilon)
 
-# Epsilon (not directly used in this version of exhaustive search, but often part of the problem statement)
-EPS = 0.5
-# N is the number of intervals to divide the search space into.
-N = 7
-
-# This is the objective function we want to minimize.
+# --- Objective Function ---
 def f(x):
+    """The function we want to minimize."""
     return (x - 2) ** 2 + np.sqrt(x)
 
-# This function implements the Exhaustive Search Method.
-# It finds the minimum of a function f(x) on a given interval [a, b].
+# --- Numerical Method: Exhaustive Search ---
 def exhaustive_search(a, b, n):
-    # The step size 'h' is calculated by dividing the interval [a, b] into 'n' equal parts.
-    h = (b - a) / n
-
-    # Lists to store the x coordinates and the corresponding function values f(x).
+    """
+    Implements the Exhaustive Search (Brute Force) method 
+    by dividing the interval [a, b] into 'n' equal parts.
+    """
+    h = (b - a) / n  # Step size
+    
     x_values = []
     f_values = []
 
-    # This loop iterates from k=0 to n, calculating x_k at each step.
-    # x_k starts at 'a' and increases by 'h' in each iteration.
+    # Calculate function values at each grid point
     for k in range(n + 1):
         xk = a + k * h
         x_values.append(xk)
         f_values.append(f(xk))
 
-    # Find the index of the minimum value in the f_values list.
+    # Identify the index of the minimum value
     min_index = np.argmin(f_values)
-
-    # Return the number of intervals, step size, lists of x and f(x) values,
-    # and the coordinates (x, f(x)) of the minimum point found.
+    
     return n, h, x_values, f_values, x_values[min_index], f_values[min_index]
 
+# --- Execution ---
+n, h, xs, ys, x_min_num, f_min_num = exhaustive_search(A, B, N)
 
-# Set the search interval and number of divisions from the global constants.
-a = A
-b = B
-n_intervals = N
+# --- Analytical / Precise Solution (Comparison) ---
+# Using a bounded scalar minimizer to represent the "Analytical" ground truth
+res = minimize_scalar(f, bounds=(A, B), method='bounded')
+x_exact = res.x
+f_exact = res.fun
 
-# Call the exhaustive search function to find the minimum.
-n, h, xs, ys, x_min, f_min = exhaustive_search(a, b, n_intervals)
+# --- Output Results ---
+print(f"--- Exhaustive Search (n={n}) ---")
+print(f"Step size (h): {h:.4f}")
+print(f"Numerical Min: x = {x_min_num:.4f}, f(x) = {f_min_num:.4f}")
 
-# Print the results of the search.
-print("Number of intervals (n) =", n)
-print("Step size (h) =", h)
+print(f"\n--- Precise Solution (Ground Truth) ---")
+print(f"Exact Min: x = {x_exact:.4f}, f(x) = {f_exact:.4f}")
 
-print("\nCalculated values:")
-for x, y in zip(xs, ys):
-    print(f"x = {x:.1f}, f(x) = {y:.4f}")
+print(f"\n--- Accuracy Metrics ---")
+print(f"Absolute Error in f(x): {abs(f_min_num - f_exact):.6f}")
 
-print("\nMinimum point found:")
-print("x_min =", x_min)
-print("f_min =", f_min)
+# --- Visualization ---
+x_plot = np.linspace(A, B, 400)
+plt.figure(figsize=(10, 6))
 
-# --- Plotting the results ---
-# Generate a range of x values for a smooth plot of the function.
-x_plot = np.linspace(a, b, 400)
-# Plot the function f(x).
-plt.plot(x_plot, f(x_plot), label="f(x) = (x-2)^2 + sqrt(x)")
-# Plot the points that were evaluated by the exhaustive search.
-plt.scatter(xs, ys, color="red", label="Evaluated Points")
-# Highlight the minimum point found.
-plt.scatter(x_min, f_min, color="green", zorder=5, label="Minimum Point")
-plt.title("Exhaustive Search Method")
+# Plot the continuous function
+plt.plot(x_plot, f(x_plot), label="Target Function $f(x)$", color='blue', alpha=0.6)
+
+# Plot the sampling points
+plt.scatter(xs, ys, color="red", s=30, label="Sampled Points (Numerical)")
+
+# Highlight the Numerical Minimum found
+plt.scatter(x_min_num, f_min_num, color="green", s=100, marker='X', zorder=5, 
+            label=f"Numerical Min (x={x_min_num:.2f})")
+
+# Highlight the Exact Minimum
+plt.axvline(x_exact, color='black', linestyle='--', alpha=0.5, label="Exact Min Position")
+
+plt.title("Exhaustive Search vs Exact Minimum")
 plt.xlabel("x")
 plt.ylabel("f(x)")
 plt.legend()
-plt.grid()
+plt.grid(True, linestyle='--', alpha=0.7)
 plt.show()

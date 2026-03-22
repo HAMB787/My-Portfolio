@@ -1,86 +1,66 @@
-# Lab: Golden Section Search Method
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Define the initial interval [A, B] for the search.
+# --- Configuration ---
 A = 0.5
 B = 4
-# Epsilon, a tolerance for the interval length (not used in this iteration-based implementation).
-EPS = 0.5
-# N is the number of iterations to perform.
-N = 7
+EPS = 0.5  # Tolerance: the algorithm stops when (b - a) <= EPS
 
-# This is the objective function we want to minimize.
 def f(x):
     return (x - 2) ** 2 + np.sqrt(x)
 
-# This function implements the Golden Section Search algorithm.
-# It finds the minimum of a unimodal function f(x) on a given interval [a, b].
-def golden_section_search(a, b, iterations=N):
-    # The golden ratio constants.
-    # r1 is approximately (3 - sqrt(5)) / 2
-    # r2 is approximately (sqrt(5) - 1) / 2, which is the golden ratio conjugate (1/phi)
-    r1 = 0.3819
-    r2 = 0.6180
-
-    print("--- Golden Section Search Iterations ---")
-    print("k\t a\t\t b\t\t x1\t\t x2\t\t f(x1)\t\t f(x2)")
-    print("-" * 70)
-
-    # The loop runs for a fixed number of iterations to narrow down the interval.
-    for k in range(iterations):
-        # Calculate two interior points, x1 and x2, using the golden ratio constants.
-        x1 = a + r1 * (b - a)
-        x2 = a + r2 * (b - a)
-
-        # Evaluate the function at the interior points.
-        f1 = f(x1)
-        f2 = f(x2)
-
-        # Print the values for the current iteration in a formatted table.
-        print(f"{k}\t{a:.4f}\t{b:.4f}\t{x1:.4f}\t{x2:.4f}\t{f1:.4f}\t{f2:.4f}")
-
-        # The core of the algorithm: reduce the search interval.
-        # If f(x1) is greater than f(x2), the minimum cannot be in the interval [a, x1].
-        # So, we update 'a' to be x1 for the next iteration.
-        if f1 > f2:
-            a = x1
-        # Otherwise, the minimum cannot be in the interval [x2, b].
-        # So, we update 'b' to be x2 for the next iteration.
-        else:
+def golden_section_search(a, b, eps):
+    # Golden ratio constants
+    phi = (1 + np.sqrt(5)) / 2
+    resphi = 2 - phi  # approx 0.3819
+    
+    # Step 0: Initial points
+    x1 = a + resphi * (b - a)
+    x2 = b - resphi * (b - a)
+    f1, f2 = f(x1), f(x2)
+    
+    iterations = 0
+    while (b - a) > eps:
+        iterations += 1
+        if f1 < f2:
             b = x2
-
-    # After the iterations, the minimum is estimated as the midpoint of the final interval [a, b].
+            x2 = x1
+            f2 = f1
+            x1 = a + resphi * (b - a)
+            f1 = f(x1)
+        else:
+            a = x1
+            x1 = x2
+            f1 = f2
+            x2 = b - resphi * (b - a)
+            f2 = f(x2)
+            
     x_star = (a + b) / 2
-    f_star = f(x_star)
+    return x_star, f(x_star), a, b, iterations
 
-    print("\n--- Minimum Point Found ---")
-    print(f"x* = {x_star:.4f}")
-    print(f"f(x*) = {f_star:.4f}")
+# Execution
+x_opt, f_opt, final_a, final_b, steps = golden_section_search(A, B, EPS)
 
-    return x_star, f_star
+# --- Updated Print Section ---
+print(f"Final Interval: [{final_a:.4f}, {final_b:.4f}]")
+print(f"Minimum found at x ≈ {x_opt:.4f}")
+print(f"Function value at this point f(x) ≈ {f_opt:.4f}") # Ավելացված տողը
+print(f"Found after {steps} iterations")
 
+# --- Visualization ---
+x_plot = np.linspace(A, B, 400)
+plt.figure(figsize=(10, 6))
+plt.plot(x_plot, f(x_plot), label="f(x)", color='blue')
 
-# --- Execution ---
-# Call the golden section search function with the initial interval and number of iterations.
-x_star, f_star = golden_section_search(A, B, N)
+# Highlight the final interval [a, b] where the minimum lies
+plt.axvspan(final_a, final_b, color='yellow', alpha=0.3, label=f"Final Interval (size <= {EPS})")
 
+# Mark the specific minimum point
+plt.scatter(x_opt, f_opt, color='red', zorder=5, label=f"Min at x={x_opt:.3f}")
 
-# --- Plotting the results ---
-# Generate a range of x values for a smooth plot of the function.
-x = np.linspace(A, B, 400)
-y = f(x)
-
-# Plot the function f(x).
-plt.plot(x, y, label="f(x) = (x-2)^2 + sqrt(x)")
-# Highlight the minimum point found by the algorithm.
-plt.scatter(x_star, f_star, color="red", s=80, zorder=5, label="Minimum Found")
-
-plt.title("Golden Section Search Method")
+plt.title("Golden Section Search: Final Uncertainty Interval")
 plt.xlabel("x")
 plt.ylabel("f(x)")
 plt.legend()
-plt.grid()
-
-# Display the plot.
+plt.grid(True, linestyle='--', alpha=0.6)
 plt.show()

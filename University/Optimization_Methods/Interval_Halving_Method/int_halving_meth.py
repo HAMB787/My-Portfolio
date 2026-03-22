@@ -1,83 +1,70 @@
-# Lab: Interval Halving Method (also known as Dichotomy Method)
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Define the initial interval [A, B] for the search.
+# --- Configuration ---
 A = 0.5
 B = 4
-# EPS is the desired precision (epsilon). The algorithm stops when the interval length is less than EPS.
 EPS = 0.5
-# DELTA is a small number used to separate the two test points (x1 and x2). It must be smaller than EPS.
-DELTA = 0.125
+DELTA = 0.125  # Should be 0 < DELTA < 2*EPS
 
-# This is the objective function we want to minimize.
 def f(x):
+    """Objective function to minimize."""
     return (x - 2) ** 2 + np.sqrt(x)
 
-# This function implements the Interval Halving Method.
-# It finds the minimum of a unimodal function f(x) on a given interval [a, b].
-def interval_halving_method(a, b, eps, delta):
+def dichotomy_method(a, b, eps, delta):
+    """
+    Implements the Interval Halving (Dichotomy) Method.
+    """
     iteration = 0
-    print("--- Interval Halving Method Iterations ---")
-    print("k\t a\t\t b\t\t b-a")
-    print("-" * 40)
+    print(f"{'k':<5} | {'a':<10} | {'b':<10} | {'b-a':<10} | {'f(xm)':<10}")
+    print("-" * 55)
 
-    # The loop continues as long as the interval [a, b] is larger than the desired precision 'eps'.
     while (b - a) > eps:
-        print(f"{iteration}\t{a:.4f}\t{b:.4f}\t{(b-a):.4f}")
-        # Calculate two points, x1 and x2, near the middle of the current interval.
-        # These points are separated by 'delta'.
+        # Calculate mid-point for logging
+        xm = (a + b) / 2
+        print(f"{iteration:<5} | {a:<10.4f} | {b:<10.4f} | {(b-a):<10.4f} | {f(xm):<10.4f}")
+
+        # Calculate two symmetric points around the center
         x1 = (a + b - delta) / 2
         x2 = (a + b + delta) / 2
 
-        # Compare the function values at x1 and x2 to decide which half of the interval to discard.
+        # Decide which part of the interval to keep
         if f(x1) <= f(x2):
-            # The minimum is in the left part, so we discard the right part [x2, b].
             b = x2
         else:
-            # The minimum is in the right part, so we discard the left part [a, x1].
             a = x1
-
+        
         iteration += 1
+
+    x_star = (a + b) / 2
+    f_star = f(x_star)
     
-    print(f"{iteration}\t{a:.4f}\t{b:.4f}\t{(b-a):.4f}")
+    # Final state
+    print(f"{iteration:<5} | {a:<10.4f} | {b:<10.4f} | {(b-a):<10.4f} | {f_star:<10.4f}")
+    return x_star, f_star, a, b, iteration
 
-    # The minimum is estimated as the midpoint of the final, small interval [a, b].
-    x_min = (a + b) / 2
-    return x_min, f(x_min), iteration
+# --- Execution ---
+x_min, f_min, final_a, final_b, iters = dichotomy_method(A, B, EPS, DELTA)
 
+print(f"\n--- Final Result ---")
+print(f"Minimum at x* ≈ {x_min:.4f}")
+print(f"Function value f(x*) ≈ {f_min:.4f}")
+print(f"Converged in {iters} iterations")
 
-# Set the initial parameters for the search.
-a = A
-b = B
-eps = EPS
-delta = DELTA
-
-# Call the interval halving function to find the minimum.
-x_min, f_min, iters = interval_halving_method(a, b, eps, delta)
-
-# Print the final results.
-print("\n--- Minimum Point Found ---")
-print(f"x* = {x_min:.4f}")
-print(f"f(x*) = {f_min:.4f}")
-print(f"Iterations = {iters}")
-
-
-# --- Plotting the results ---
-# Generate a range of x values for a smooth plot of the function.
+# --- Visualization ---
 x_plot = np.linspace(A, B, 400)
-y_plot = f(x_plot)
+plt.figure(figsize=(10, 6))
+plt.plot(x_plot, f(x_plot), label="f(x)", color='blue', alpha=0.7)
 
-# Plot the function f(x).
-plt.plot(x_plot, y_plot, label="f(x) = (x-2)^2 + sqrt(x)")
-# Highlight the minimum point found by the algorithm.
-plt.scatter(x_min, f_min, color="red", s=80, zorder=5, label="Minimum Found")
+# Highlight the final uncertainty interval
+plt.axvspan(final_a, final_b, color='green', alpha=0.2, label=f"Final Interval (size <= {EPS})")
 
-plt.title("Interval Halving Method")
+# Mark the minimum point
+plt.scatter(x_min, f_min, color="red", s=100, marker='*', zorder=5, label=f"Min (x={x_min:.3f})")
+
+plt.title("Dichotomy Method: Search Visualization")
 plt.xlabel("x")
 plt.ylabel("f(x)")
 plt.legend()
-plt.grid()
-
-# Display the plot.
-plt.show()
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.show()  
