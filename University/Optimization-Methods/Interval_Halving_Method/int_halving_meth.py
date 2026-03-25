@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+from scipy.optimize import minimize_scalar
 
 # --- Configuration & Constants ---
 A = 0.5
@@ -61,11 +62,18 @@ x_min, f_min, history, iters = dichotomy_method(A, B, EPS, DELTA)
 # Extract the final 'a' and 'b' values from the last item in the history
 final_a, final_b = history[-1]
 
+# --- Analytical / Precise Solution (Comparison) ---
+res = minimize_scalar(f, bounds=(A, B), method='bounded')
+x_exact = res.x
+f_exact = res.fun
+
 # --- Output Results ---
 print(f"\n--- Final Result ---")
+print("-" * 55)
 print(f"Final Interval: [{final_a:.4f}, {final_b:.4f}]")
-print(f"Minimum at x* ≈ {x_min:.4f}")
-print(f"Function value f(x*) ≈ {f_min:.4f}")
+print(f"Calculated Min at x ≈ {x_min:.4f}, f(x) ≈ {f_min:.4f}")
+print(f"Actual Minimum x* ≈ {x_exact:.4f}, f(x*) ≈ {f_exact:.4f}")
+print(f"Error |x - x*| = {abs(x_min - x_exact):.6f}")
 print(f"Converged in {iters} iterations")
 
 # --- Visualization ---
@@ -89,12 +97,13 @@ for i, (a_k, b_k) in enumerate(history):
     plt.plot([a_k, b_k], [y_pos, y_pos], marker='|', color=colors[i], 
              linewidth=3, markersize=10, label=f"Iteration {i}")
 
-# Mark the final minimum point with a distinct star marker
-plt.scatter(x_min, f_min, color="red", s=150, marker='*', zorder=5, label=f"Min at x ≈ {x_min:.3f}")
+# Mark the Specific Points
+plt.scatter(x_exact, f_exact, color='black', marker='x', s=100, zorder=6, label=f"Exact Min")
+plt.scatter(x_min, f_min, color="red", s=150, marker='*', edgecolors='black', zorder=5, label=f"Calculated Min at x ≈ {x_min:.3f}")
 
 plt.title("Dichotomy Method: Iterative Interval Reduction")
-plt.xlabel("x")
-plt.ylabel("f(x)")
+plt.xlabel("X")
+plt.ylabel("f(X)")
 
 # Move legend outside the plot so it doesn't overlap the lines
 plt.legend(loc='upper right', fontsize=9, bbox_to_anchor=(1.25, 1))

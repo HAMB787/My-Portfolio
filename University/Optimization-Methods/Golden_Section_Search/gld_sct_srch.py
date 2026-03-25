@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+from scipy.optimize import minimize_scalar
 
 # --- Configuration & Constants ---
 A = 0.5
@@ -69,11 +70,17 @@ x_opt, f_opt, history, steps = golden_section_search(A, B, EPS)
 # Extract the final 'a' and 'b' values from the last item in the history
 final_a, final_b = history[-1]
 
+# --- Analytical / Precise Solution (Comparison) ---
+res = minimize_scalar(f, bounds=(A, B), method='bounded')
+x_exact = res.x
+f_exact = res.fun
+
 # --- Output Results ---
 print("-" * 70)
 print(f"Final Interval: [{final_a:.4f}, {final_b:.4f}]")
-print(f"Minimum found at x ≈ {x_opt:.4f}")
-print(f"Function value at this point f(x) ≈ {f_opt:.4f}") 
+print(f"Calculated Minimum at x ≈ {x_opt:.4f}, f(x) ≈ {f_opt:.4f}")
+print(f"Actual Minimum x* ≈ {x_exact:.4f}, f(x*) ≈ {f_exact:.4f}")
+print(f"Error |x - x*| = {abs(x_opt - x_exact):.6f}")
 print(f"Found after {steps} iterations")
 
 # --- Visualization ---
@@ -97,12 +104,13 @@ for i, (a_k, b_k) in enumerate(history):
     plt.plot([a_k, b_k], [y_pos, y_pos], marker='|', color=colors[i], 
              linewidth=3, markersize=10, label=f"Iteration {i}")
 
-# Mark the specific minimum point found by the algorithm
-plt.scatter(x_opt, f_opt, color='red', s=100, zorder=5, label=f"Min at x ≈ {x_opt:.3f}")
+# Mark the Specific Points
+plt.scatter(x_exact, f_exact, color='black', marker='x', s=100, zorder=6, label=f"Exact Min")
+plt.scatter(x_opt, f_opt, color='red', s=100, zorder=5, label=f"Calculated Min at x ≈ {x_opt:.3f}")
 
 plt.title("Golden Section Search: Iterative Interval Reduction")
-plt.xlabel("x")
-plt.ylabel("f(x)")
+plt.xlabel("X")
+plt.ylabel("f(X)")
 
 # Place the legend in a convenient location outside the main plotting area
 plt.legend(loc='upper right', fontsize=9, bbox_to_anchor=(1.25, 1))
