@@ -17,16 +17,16 @@ def golden_section_search(a, b, eps):
     Implements the Golden Section Search method and tracks 
     the interval reduction history for visualization.
     """
-    # Golden ratio constants
-    phi = (1 + np.sqrt(5)) / 2
-    resphi = 2 - phi  
+    # Գործակիցներ ըստ քո ուղարկած բանաձևի (ճշգրիտ արժեքներով)
+    c1 = (3 - np.sqrt(5)) / 2  # Մոտավորապես 0.3819
+    c2 = (np.sqrt(5) - 1) / 2  # Մոտավորապես 0.6180
     
     # 1. Create a history list to store 'a' and 'b' values at each step
     history = [(a, b)] 
     
-    # Step 0: Initial internal points
-    x1 = a + resphi * (b - a)
-    x2 = b - resphi * (b - a)
+    # Step 0: Initial internal points (Ճիշտ քո նկարի տրամաբանությամբ)
+    x1 = a + c1 * (b - a)
+    x2 = a + c2 * (b - a)
     f1, f2 = f(x1), f(x2)
     
     # --- TABLE HEADER ---
@@ -44,14 +44,16 @@ def golden_section_search(a, b, eps):
             b = x2
             x2 = x1
             f2 = f1
-            x1 = a + resphi * (b - a)
+            # Հաշվում ենք նոր x1-ը նույն բանաձևով
+            x1 = a + c1 * (b - a)
             f1 = f(x1)
         else:
             # The minimum is to the right; discard the left section
             a = x1
             x1 = x2
             f1 = f2
-            x2 = b - resphi * (b - a)
+            # Հաշվում ենք նոր x2-ը նույն բանաձևով
+            x2 = a + c2 * (b - a)
             f2 = f(x2)
             
         # 2. After each step, append the new [a, b] interval to the history
