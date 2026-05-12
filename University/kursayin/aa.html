@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Դինամիկ Ծրագրավորման Ալգորիթմի Բլոկ-սխեմա</title>
+    <!-- Mermaid.js գրադարանի ներմուծում բլոկ-սխեման նկարելու համար -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: false, htmlLabels: true }
+        });
+    </script>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f8fafc; 
+            margin: 0; 
+            padding: 40px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+        h2 { color: #1e293b; margin-bottom: 30px; text-align: center; }
+        .diagram-container { 
+            background-color: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Ավազի բաշխման խնդրի ալգորիթմական բլոկ-սխեման</h2>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+            flowchart TD
+                Start([Սկիզբ]) --> Init["<b>Տվյալների մուտքագրում</b><br/>Շենքերի պահանջարկների, հանքերի պաշարների<br/>և տրանսպորտային ծախսերի գործակիցների գրանցում"]
+                Init --> DP_Init["<b>Աղյուսակների նախապատրաստում</b><br/>Ծախսերի և որոշումների պահպանման համար<br/>դատարկ աղյուսակների ստեղծում"]
+                
+                DP_Init --> Loop_K_Start{"<b>Շենքերի դիտարկում (Հետընթաց քայլ)</b><br/>Վերջին շենքից դեպի առաջինը"}
+                
+                Loop_K_Start -- Այո --> Loop_S_Start{"<b>Պաշարների դիտարկում</b><br/>Ստուգել 1-ին հանքի ավազի<br/>բոլոր հնարավոր մնացորդները"}
+                
+                Loop_S_Start -- Այո --> Loop_X1_Start{"<b>Որոշումների փորձարկում</b><br/>Որքա՞ն ավազ հատկացնել 1-ին հանքից<br/>(չգերազանցելով պահանջարկն ու մնացորդը)"}
+                
+                Loop_X1_Start -- Այո --> CalcCost["<b>Ծախսի հաշվարկ</b><br/>Հաշվել տվյալ շենքի ապահովման ծախսը երկու հանքերից<br/>և գումարել մնացած շենքերի օպտիմալ ծախսին"]
+                
+                CalcCost --> Condition{"Արդյո՞ք նոր հաշվարկված ծախսը<br/>ավելի փոքր է նախկինում գտնվածից"}
+                
+                Condition -- Այո (Նոր մինիմում) --> UpdateDP["<b>Հիշել լավագույն տարբերակը</b><br/>Թարմացնել նվազագույն ծախսը<br/>և պահպանել ընդունված որոշումը"]
+                Condition -- Ոչ --> NextX1["Դիտարկել ավազի հատկացման հաջորդ տարբերակը"]
+                UpdateDP --> NextX1
+                
+                NextX1 --> Loop_X1_Start
+                
+                Loop_X1_Start -- Ավարտված է --> NextS["Անցնել 1-ին հանքի հաջորդ հնարավոր մնացորդին"]
+                NextS --> Loop_S_Start
+                
+                Loop_S_Start -- Ավարտված է --> NextK["Անցնել հաջորդ շենքի հաշվարկին"]
+                NextK --> Loop_K_Start
+                
+                Loop_K_Start -- Ավարտված է --> Fwd_Init["<b>Օպտիմալ պլանի վերականգնում</b><br/>Սկսել 1-ին հանքի ամբողջական (30տ) պաշարից"]
+                
+                Fwd_Init --> Loop_Fwd_Start{"<b>Շենքերի հերթական բավարարում (Ուղիղ քայլ)</b><br/>Առաջին շենքից դեպի վերջինը"}
+                
+                Loop_Fwd_Start -- Այո --> ExtractData["<b>Որոշումների գրանցում</b><br/>Վերցնել պահպանված լավագույն որոշումը տվյալ շենքի համար,<br/>հաշվել ծախսը և նվազեցնել հանքի մնացորդը"]
+                
+                ExtractData --> NextFwdK["Անցնել հաջորդ շենքի բավարարմանը"]
+                NextFwdK --> Loop_Fwd_Start
+                
+                Loop_Fwd_Start -- Ավարտված է --> PrintOutput["<b>Վերջնարդյունք</b><br/>Կառուցել բաշխման աղյուսակը և<br/>ցուցադրել նվազագույն գումարային ծախսը"]
+                
+                PrintOutput --> End([Ավարտ])
+
+                %% Գույների սահմանում (Styling)
+                classDef default fill:#f1f5f9,stroke:#64748b,stroke-width:2px;
+                classDef loop fill:#e0f2fe,stroke:#0284c7,stroke-width:2px;
+                classDef logic fill:#fef08a,stroke:#ca8a04,stroke-width:2px;
+                classDef update fill:#dcfce7,stroke:#16a34a,stroke-width:2px;
+                classDef terminal fill:#cbd5e1,stroke:#334155,stroke-width:3px;
+
+                class Start,End terminal;
+                class Loop_K_Start,Loop_S_Start,Loop_X1_Start,Loop_Fwd_Start loop;
+                class Condition logic;
+                class UpdateDP update;
+        </div>
+    </div>
+
+</body>
+</html>

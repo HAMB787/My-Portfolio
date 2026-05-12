@@ -1,0 +1,16 @@
+{
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "sqltools.disableChordKeybindings": true,
+    "mssql.connections": [
+        {
+            "id": "local-sqlexpress-profile",
+            "groupId": "ROOT",
+            "server": ".\\SQLEXPRESS",
+            "database": "master",
+            "authenticationType": "Integrated",
+            "encrypt": "Optional",
+            "trustServerCertificate": true,
+            "profileName": "Local SQLEXPRESS"
+        }
+    ]
+}
