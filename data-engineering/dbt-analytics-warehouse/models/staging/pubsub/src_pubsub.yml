@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: pubsub
+    project: ritualanalyitcs
+    dataset: pubsub
+    description: This dataset contains the client side tracking data from PubSub topic.
+    freshness:
+      error_after:
+        count: 6
+        period: hour
+    loaded_at_field: created_at       
+
+    tables:
+      - name: events
+      - name: segment_events_historical_data
+        freshness: null
+      - name: segment_events_historical_data_old_events
+        freshness: null

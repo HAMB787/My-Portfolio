@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: google_play
+    project: ritualanalyitcs
+    dataset: fivetran_google_play
+    description: This dataset contains the data from Appstore, ingested through Fivetran.
+    freshness:
+      error_after:
+        count: 30
+        period: day
+    loaded_at_field: _fivetran_synced     
+
+    tables:
+      - name: reviews

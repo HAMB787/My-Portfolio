@@ -1,0 +1,146 @@
+version: 2
+
+models:
+  - name: stg_segment_native_app__app_message_displayed
+    description: All native app message displayed events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__member_nativeapp_clicked
+    description: All native app clicked events by members
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__message_read
+    description: All native app message read events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__member_emotional_checkin_started
+    description: All native app message read events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__member_emotional_checkin_completed
+    description: All native app message read events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__member_emotion_tab_click
+    description: All native app message read events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__member_emotional_checkin_selection
+    description: All native app message read events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__application_installed
+    description: All native app message read events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__application_opened
+    description: All native app message read events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          # - unique 1 duplication there is, later check
+          - not_null
+
+  - name: stg_segment_native_app__application_backgrounded
+    description: All native app message read events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__banner_monthlytopic_clicked
+    description: All native app topic of the month click events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__banner_monthlytopic_closed
+    description: All native app topic of the month banner close events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__member_content_clicked
+    description: All native app topic of the month click events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__member_content_closed
+    description: All native app topic of the month content close events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__member_content_completed
+    description: All native app topic of the month content complete events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_native_app__member_partnerrequest_sent
+    description: All native app partner request sent events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null

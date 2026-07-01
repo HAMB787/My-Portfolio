@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: postgre_rds_cms
+    project: ritualanalyitcs
+    dataset: fivetran_postgres_rds_replica_cms_public
+    description: This dataset contains the CMS data from Postgre DB, ingested through Fivetran.  
+
+    tables:
+      - name: gw_news
+      - name: parts   
+      - name: modules      
+      - name: module_relations
+      - name: module_relations_gw_links
+      - name: module_relations_module_links
+      - name: module_relations_part_links

@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: bing_ads
+    project: ritualanalyitcs
+    dataset: fivetran_bingads
+    description: This dataset contains the data from Bing/Microsoft Ads, ingested through Fivetran.
+    freshness:
+      error_after:
+        count: 24
+        period: hour
+    loaded_at_field: _fivetran_synced       
+
+    tables:
+      - name: account_performance_daily_report

@@ -1,0 +1,53 @@
+version: 2
+
+sources:
+  - name: postgre_rds
+    project: ritualanalyitcs
+    dataset: fivetran_google_cloud_postgresql_replica_public
+    description: This dataset contains the data from Postgre DB, ingested through Fivetran.
+    freshness:
+      error_after:
+        count: 24
+        period: hour
+    loaded_at_field: _fivetran_synced        
+
+    tables:
+      - name: accounting_contractdetails
+        freshness: 
+          error_after:
+            count: 30
+            period: day       
+        loaded_at_field: _fivetran_synced                
+      - name: webapp_expert
+        freshness: 
+          error_after:
+            count: 30
+            period: day
+        loaded_at_field: _fivetran_synced              
+        
+      - name: webapp_member
+      - name: webapp_session
+      - name: webapp_sessionlinks
+        freshness: 
+          error_after:
+            count: 30
+            period: day      
+        loaded_at_field: _fivetran_synced              
+
+      - name: accounting_invoice
+        freshness: 
+          error_after:
+            count: 30
+            period: day       
+        loaded_at_field: _fivetran_synced              
+      - name: accounting_monthlyreport
+        freshness: 
+          error_after:
+            count: 30
+            period: day
+        loaded_at_field: _fivetran_synced                     
+      - name: webapp_membergrowthwork
+      - name: webapp_account
+      - name: webapp_plan
+        freshness: null         
+      - name: insights_insight        

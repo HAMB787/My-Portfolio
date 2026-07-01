@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: stg_impact__action
+    description: Staging table for Impact actions.
+    columns:
+      - name: id
+        description: Unique identifier for record.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_impact__ads
+    description: Staging table for Impact ads.
+    columns:
+      - name: id
+        description: Unique identifier for an ad.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_impact__action_event
+    description: Staging table for Impact actions (new one).
+    columns:
+      - name: id
+        description: Unique identifier for record.
+        tests:
+          - unique
+          - not_null          

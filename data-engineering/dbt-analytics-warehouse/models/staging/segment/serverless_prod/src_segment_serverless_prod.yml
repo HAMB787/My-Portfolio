@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: segment_serverless_prod
+    project: ritualanalyitcs
+    dataset: serverless_prod
+    description: This dataset contains the data sent from segment serverless prod connector.        
+
+    tables:
+      - name: first_subscription_activation
+      - name: lead_qualified
+      - name: lead_acquired
+      - name: customer_subscription_created

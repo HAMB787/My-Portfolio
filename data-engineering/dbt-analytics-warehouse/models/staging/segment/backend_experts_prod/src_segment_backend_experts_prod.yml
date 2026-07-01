@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: segment_backend_experts_prod
+    project: ritualanalyitcs
+    dataset: backend_experts_prod
+    description: This dataset contains the data sent from segment backend_experts_prod connector.
+
+    tables:
+      - name: module_growthwork_complete

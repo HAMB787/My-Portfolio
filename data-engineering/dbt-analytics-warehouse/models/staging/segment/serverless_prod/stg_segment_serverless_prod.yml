@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: stg_segment_serverless_prod__first_subscription_activation
+    description: All first subscription activation events by members
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_serverless_prod__lead_qualified
+    description: All lead qualified events by members
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null          
+
+  - name: stg_segment_serverless_prod__lead_acquired
+    description: All lead qualified events by members
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null          
+
+  - name: stg_segment_serverless_prod__customer_subscription_created
+    description: All subscription events by members/customers
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null          

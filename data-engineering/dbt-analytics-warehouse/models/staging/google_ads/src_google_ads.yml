@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: google_ads
+    project: ritualanalyitcs
+    dataset: fivetran_google_ads
+    description: This dataset contains the data from Google Ads, ingested through Fivetran.
+    freshness:
+      error_after:
+        count: 24
+        period: hour
+    loaded_at_field: _fivetran_synced     
+
+    tables:
+      - name: ad_stats
+      - name: campaign_stats
+      - name: campaign_history
+        freshness: null

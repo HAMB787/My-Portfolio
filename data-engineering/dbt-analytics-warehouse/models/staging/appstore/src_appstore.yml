@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: appstore
+    project: ritualanalyitcs
+    dataset: fivetran_appstore_connect
+    description: This dataset contains the data from Appstore, ingested through Fivetran.    
+
+    tables:
+      - name: review
+
+  - name: appstore_new
+    project: ritualanalyitcs
+    dataset: fivetran_appstore_connect_new
+    description: This dataset contains the data from Appstore, ingested through Fivetran (New connector as the old one was deprecated).
+    freshness:
+      error_after:
+        count: 30
+        period: day
+    loaded_at_field: _fivetran_synced     
+
+    tables:
+      - name: app_store_review

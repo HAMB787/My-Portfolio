@@ -1,0 +1,95 @@
+version: 2
+
+models:
+  - name: stg_stripe__charge
+    description: All data for charges in Stripe
+    columns:
+      - name: id
+        description: Unique id of the record
+        tests:
+          - unique
+          - not_null
+          
+  - name: stg_stripe__customer
+    description: All data for customers in Stripe
+    columns:
+      - name: id
+        description: Unique id of the record
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_stripe__invoice
+    description: All data for invoices in Stripe
+    columns:
+      - name: id
+        description: Unique id of the record
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_stripe__product
+    description: All data for products in Stripe
+    columns:
+      - name: id
+        description: Unique id of the record
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_stripe__subscription_history
+    description: All data for subscriptions in Stripe, it's in history mode
+    columns:
+      - name: id
+        description: Unique id of the record
+        tests:
+          - unique:
+              where: "is_fivetran_active = TRUE"
+          - not_null
+
+
+  - name: stg_stripe__subscription_item
+    description: All data for subscription items in Stripe
+    columns:
+      - name: id
+        description: Unique id of the record
+        tests:
+          - unique
+          - not_null
+
+
+  - name: stg_stripe__plan
+    description: All data for plans in Stripe
+    columns:
+      - name: id
+        description: Unique id of the record
+        tests:
+          - unique
+          - not_null                    
+
+  - name: stg_stripe__coupon
+    description: All data for coupons in Stripe
+    columns:
+      - name: id
+        description: Unique id of the record
+        tests:
+          - unique
+          - not_null                    
+
+  - name: stg_stripe__payment_method
+    description: All data for payment method in Stripe
+    columns:
+      - name: id
+        description: Unique id of the record
+        tests:
+          - unique
+          - not_null                    
+
+  - name: stg_stripe__promotion_code
+    description: All data for promocode in Stripe
+    columns:
+      - name: id
+        description: Unique id of the record
+        tests:
+          - unique
+          - not_null                    

@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: stg_appstore__review_history
+    description: Staging table for Appstore reviews.
+    columns:
+      - name: id
+        description: Unique identifier for record.
+        tests:
+          - not_null
+
+  - name: stg_appstore__app_store_review
+    description: Staging table for Appstore reviews.
+    columns:
+      - name: id
+        description: Unique identifier for record.
+        tests:
+          - not_null

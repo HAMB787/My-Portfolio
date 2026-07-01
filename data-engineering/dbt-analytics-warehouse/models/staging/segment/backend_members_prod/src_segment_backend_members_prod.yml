@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: segment_backend_members_prod
+    project: ritualanalyitcs
+    dataset: backend_members_prod
+    description: This dataset contains the data sent from segment javascript connector.
+
+    tables:
+      - name: scheduled_session
+      - name: canceled_meeting
+      - name: onboarding_session_show
+      - name: onboarding_session_noshow     
+      - name: module_part_assigned
+      - name: assigned_primary_member

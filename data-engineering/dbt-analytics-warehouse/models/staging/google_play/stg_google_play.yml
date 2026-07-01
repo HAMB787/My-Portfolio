@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: stg_google_play__reviews
+    description: Staging table for Google Play reviews.
+    columns:
+      - name: id
+        description: Unique identifier for record.
+        tests:
+          - unique
+          - not_null

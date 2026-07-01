@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: stg_segment_backend_members_prod__scheduled_session
+    description: All schedule session events by members
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_backend_members_prod__canceled_meeting
+    description: All schedule session events by members
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_backend_members_prod__onboarding_session_show
+    description: All schedule session events by members
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_backend_members_prod__onboarding_session_noshow
+    description: All schedule session events by members
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_backend_members_prod__module_part_assigned
+    description: All module part assigned events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_backend_members_prod__assigned_primary_member
+    description: All primary member assign events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null

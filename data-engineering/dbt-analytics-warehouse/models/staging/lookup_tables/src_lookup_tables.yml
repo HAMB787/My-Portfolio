@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: gsheet_lookup_tables
+    project: ritualanalyitcs
+    dataset: gsheet_lookup_tables
+    description: This dataset contains lookup tables created from google sheets.
+    tables:
+      - name: activity_events
+      - name: click_events_mapping

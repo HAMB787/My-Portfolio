@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: stg_segment_backend_experts_prod__module_growthwork_complete
+    description: All module growthwork complete events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null

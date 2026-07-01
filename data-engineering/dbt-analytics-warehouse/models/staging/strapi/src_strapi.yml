@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: strapi
+    project: ritualanalyitcs
+    dataset: databricks_strapi
+    description: This dataset CMS contains the data from Strapi, ingested through Databricks.
+    freshness:
+      error_after:
+        count: 96
+        period: hour
+    loaded_at_field: _databricks_synced_at       
+
+    tables:
+      - name: gw_module_relations

@@ -1,0 +1,158 @@
+version: 2
+
+models:
+  - name: stg_pubsub__events
+    description: "A staging table capturing event data from Pub/Sub, including user information, device details, and geolocation data."
+    columns:
+      - name: created_at
+        description: "Timestamp indicating when the event was created."
+        tests:
+          - not_null
+
+      - name: id
+        description: "Unique identifier for the event."
+        tests:
+          - not_null
+          # - unique commenting for now
+
+      - name: event_name
+        description: "Name of the event being tracked."
+        tests:
+          - not_null
+
+      - name: user_id
+        description: "Identifier for the user associated with the event."
+
+      - name: anonymous_id
+        description: "Anonymous identifier for the user, if applicable."
+
+      - name: user_email
+        description: "Email of the user associated with the event."
+
+      - name: source_platform
+        description: "Platform from which the event originated."
+
+      - name: source_version
+        description: "Version of the source platform."
+
+      - name: device_user_agent
+        description: "User agent string from the device used during the event."
+
+      - name: device_type
+        description: "Type of device used during the event (e.g., mobile, desktop)."
+
+      - name: device_os
+        description: "Operating system of the device used during the event."
+
+      - name: device_version
+        description: "Version of the operating system on the device used during the event."
+
+      - name: geo_country
+        description: "Country from which the event was triggered, based on geolocation."
+
+      - name: geo_state
+        description: "State or region from which the event was triggered, based on geolocation."
+
+      - name: geo_iso_code
+        description: "ISO code for the country from which the event was triggered."
+
+      - name: geo_ip
+        description: "IP address of the device from which the event was triggered."
+
+      - name: geo_locale
+        description: "Locale of the device from which the event was triggered."
+
+      - name: geo_timezone
+        description: "Timezone of the device from which the event was triggered."
+
+      - name: utm_source
+        description: "UTM parameter indicating the source of the traffic for the event."
+
+      - name: utm_medium
+        description: "UTM parameter indicating the medium of the traffic for the event."
+
+      - name: utm_campaign
+        description: "UTM parameter indicating the campaign associated with the event."
+
+      - name: payload
+        description: "JSON payload containing the raw event data."
+        tests:
+          - not_null
+
+  - name: stg_pubsub__events_historical
+    description: "A staging table capturing event data from Pub/Sub, including user information, device details, and geolocation data."
+    columns:
+      - name: created_at
+        description: "Timestamp indicating when the event was created."
+        tests:
+          - not_null
+
+      - name: id
+        description: "Unique identifier for the event."
+        tests:
+          - not_null
+          - unique
+
+      - name: event_name
+        description: "Name of the event being tracked."
+        tests:
+          - not_null
+
+      - name: user_id
+        description: "Identifier for the user associated with the event."
+
+      - name: anonymous_id
+        description: "Anonymous identifier for the user, if applicable."
+
+      - name: user_email
+        description: "Email of the user associated with the event."
+
+      - name: source_platform
+        description: "Platform from which the event originated."
+
+      - name: source_version
+        description: "Version of the source platform."
+
+      - name: device_user_agent
+        description: "User agent string from the device used during the event."
+
+      - name: device_type
+        description: "Type of device used during the event (e.g., mobile, desktop)."
+
+      - name: device_os
+        description: "Operating system of the device used during the event."
+
+      - name: device_version
+        description: "Version of the operating system on the device used during the event."
+
+      - name: geo_country
+        description: "Country from which the event was triggered, based on geolocation."
+
+      - name: geo_state
+        description: "State or region from which the event was triggered, based on geolocation."
+
+      - name: geo_iso_code
+        description: "ISO code for the country from which the event was triggered."
+
+      - name: geo_ip
+        description: "IP address of the device from which the event was triggered."
+
+      - name: geo_locale
+        description: "Locale of the device from which the event was triggered."
+
+      - name: geo_timezone
+        description: "Timezone of the device from which the event was triggered."
+
+      - name: utm_source
+        description: "UTM parameter indicating the source of the traffic for the event."
+
+      - name: utm_medium
+        description: "UTM parameter indicating the medium of the traffic for the event."
+
+      - name: utm_campaign
+        description: "UTM parameter indicating the campaign associated with the event."
+
+      - name: payload
+        description: "JSON payload containing the raw event data."
+        tests:
+          - not_null

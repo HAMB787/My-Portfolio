@@ -1,0 +1,93 @@
+version: 2
+
+models:
+  - name: stg_postgre_rds__accounting_contractdetails
+    description: Staging table for contract details.
+    columns:
+      - name: id
+        description: Unique identifier for contract details.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_postgre_rds__webapp_expert
+    description: Staging table for expert details.
+    columns:
+      - name: id
+        description: Unique identifier for an expert.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_postgre_rds__webapp_member
+    description: Staging table for member details.
+    columns:
+      - name: id
+        description: Unique identifier for a member.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_postgre_rds__webapp_session
+    description: Staging table for session details.
+    columns:
+      - name: id
+        description: Unique identifier for a session.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_postgre_rds__webapp_sessionlinks
+    description: Staging table for session link details.
+    columns:
+      - name: id
+        description: Unique identifier for a session link.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_postgre_rds__webapp_membergrowthwork_videoask
+    description: Staging table for videoask activities
+    columns:
+      - name: id
+        description: Unique identifier for a record.
+        tests:
+          - unique
+          - not_null
+
+
+  - name: stg_postgre_rds__webapp_membergrowthwork_typeform
+    description: Staging table for typeform activities
+    columns:
+      - name: id
+        description: Unique identifier for a record.
+        tests:
+          - unique
+          - not_null          
+
+  - name: stg_postgre_rds__webapp_account
+    description: Staging table for webapp accounts
+    columns:
+      - name: id
+        description: Unique identifier for a record.
+        tests:
+          - unique
+          - not_null          
+
+  - name: stg_postgre_rds__webapp_plan
+    description: Staging table for webapp plans
+    columns:
+      - name: id
+        description: Unique identifier for a record.
+        tests:
+          - unique
+          - not_null          
+
+  - name: stg_postgre_rds__webapp_membergrowthwork_no_type
+    description: Staging table for member growthowrks without type
+    columns:
+      - name: id
+        description: Unique identifier for a record.
+        tests:
+          - unique
+          - not_null          

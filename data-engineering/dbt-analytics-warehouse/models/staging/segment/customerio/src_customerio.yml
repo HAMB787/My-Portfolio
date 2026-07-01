@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: segment_customerio
+    project: ritualanalyitcs
+    dataset: customerio
+    description: This dataset contains the data sent from segment customerio connector.         
+
+    tables:
+      - name: push_sent
+      - name: sms_delivered

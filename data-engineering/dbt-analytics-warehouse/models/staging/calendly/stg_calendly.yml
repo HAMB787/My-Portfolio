@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: stg_calendly__event
+    description: Staging table for Calendly events.
+    columns:
+      - name: id
+        description: Unique identifier for record.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_calendly__event_type
+    description: Staging table for Calendly event types.
+    columns:
+      - name: id
+        description: Unique identifier for record.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_calendly__users
+    description: Staging table for Calendly users.
+    columns:
+      - name: id
+        description: Unique identifier for Calendly user.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_calendly__events
+    description: Staging table for Calendly events (Databricks pipeline).
+    columns:
+      - name: id
+        description: Unique identifier for Calendly event.
+        tests:
+          - unique
+          - not_null

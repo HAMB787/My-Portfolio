@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: calendly
+    project: ritualanalyitcs
+    dataset: fivetran_calendly
+    description: This dataset contains the data from Calendly, ingested through Fivetran.
+    freshness:
+      error_after:
+        count: 24
+        period: hour
+    loaded_at_field: _fivetran_synced       
+
+    tables:
+      - name: event
+      - name: event_guest
+      - name: event_invitee
+      - name: event_type
+      - name: users
+      - name: event_membership
+
+  - name: calendly_databricks
+    project: ritualanalyitcs
+    dataset: databricks_calendly
+    description: This dataset contains the data from Calendly, ingested through Databricks.
+    freshness:
+      error_after:
+        count: 24
+        period: hour
+    loaded_at_field: _databricks_synced_at       
+
+    tables:
+      - name: user_availability_schedules
+      - name: events
+      - name: user_busy_times
+      - name: users

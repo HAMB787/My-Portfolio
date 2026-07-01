@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: stg_postgre_rds_cms__gw_news
+    description: Staging table for growthworks.
+    columns:
+      - name: id
+        description: Unique identifier for growthwork.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_postgre_rds_cms__parts
+    description: Staging table for parts.
+    columns:
+      - name: id
+        description: Unique identifier for part.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_postgre_rds_cms__modules
+    description: Staging table for modules.
+    columns:
+      - name: id
+        description: Unique identifier for module.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_postgre_rds_cms__module_relations
+    description: Staging table for module relations.
+    columns:
+      - name: id
+        description: Unique identifier for record.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_postgre_rds_cms__module_relations_gw_links
+    description: Staging table for module relation with growthwork.
+    columns:
+      - name: id
+        description: Unique identifier for record.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_postgre_rds_cms__module_relations_part_links
+    description: Staging table for module relation with part.
+    columns:
+      - name: id
+        description: Unique identifier for record.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_postgre_rds_cms__module_relations_module_links
+    description: Staging table for module relation with module.
+    columns:
+      - name: id
+        description: Unique identifier for record.
+        tests:
+          - unique
+          - not_null

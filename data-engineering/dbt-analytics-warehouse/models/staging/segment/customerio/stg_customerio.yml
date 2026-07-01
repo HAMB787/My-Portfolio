@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_customerio__push_sent
+    description: All customer io push notification sent events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_customerio__sms_delivered
+    description: All customer io sms delivered events
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null          

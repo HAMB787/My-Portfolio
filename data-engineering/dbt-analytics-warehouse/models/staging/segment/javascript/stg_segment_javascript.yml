@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  - name: stg_segment_javascript__member_webapp_clicked
+    description: All webapp click events by members/visitors
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_javascript__get_started_button_clicked
+    description: All get started button click events by members/visitors
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_javascript__typeform_question_passed
+    description: All typeform question passed events by members/visitors
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_javascript__typeform_submitted
+    description: All typeform submitted events by members/visitors
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_javascript__pages
+    description: All page view events by members/visitors
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_javascript__pricing_page_clicked
+    description: All pricing page click events by members/visitors
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_javascript__matching_popup_opened
+    description: All matching popup open events data
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_segment_javascript__matching_continue_clicked
+    description: All matching continue click events data
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null

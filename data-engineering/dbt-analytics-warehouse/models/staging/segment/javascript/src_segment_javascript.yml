@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: segment_javascript
+    project: ritualanalyitcs
+    dataset: javascript
+    description: This dataset contains the data sent from segment javascript connector.    
+
+    tables:
+      - name: member_webapp_clicked
+      - name: get_started_button_clicked
+      - name: typeform_submitted
+      - name: typeform_question_passed
+      - name: pricing_page_clicked
+      - name: pages
+      - name: matching_popup_opened
+      - name: matching_continue_clicked

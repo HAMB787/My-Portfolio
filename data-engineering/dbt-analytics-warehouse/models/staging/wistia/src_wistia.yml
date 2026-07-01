@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: wistia
+    project: ritualanalyitcs
+    dataset: databricks_wistia
+    description: This dataset contains the data from Wistia, ingested through Databricks.
+    freshness:
+      error_after:
+        count: 24
+        period: hour
+    loaded_at_field: _databricks_synced_at       
+
+    tables:
+      - name: event_list
+      - name: medias

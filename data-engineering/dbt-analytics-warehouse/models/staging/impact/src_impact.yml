@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: impact
+    project: ritualanalyitcs
+    dataset: fivetran_impact
+    description: This dataset contains the data from Impact, ingested through Fivetran.
+    freshness:
+      error_after:
+        count: 7
+        period: day
+    loaded_at_field: _fivetran_synced     
+
+    tables:
+      - name: action
+        freshness: null
+      - name: action_event
+      - name: ads

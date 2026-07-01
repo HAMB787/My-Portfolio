@@ -1,0 +1,2038 @@
+version: 2
+
+models:
+  - name: fct_platform_events
+    description: All platform events performed by members
+    columns:
+      - name: id
+        description: Unique id of the event
+        tests:
+          - unique
+          - not_null
+
+      - name: anonymous_id
+        description: Visitor id of the event created by Segment, before user becomes a member on Platform
+
+      - name: created_at
+        description: Timestamp the event was performed
+        tests:
+          - not_null
+
+      - name: user_id
+        description: Id of the user, corresponding to uuid in Postgre members source
+
+      - name: original_event_name
+        description: Name of the original event
+        tests:
+          - not_null
+
+      - name: event_name
+        description: Name of the actual event, some of the events are renamed according to click id-s
+        tests:
+          - not_null
+
+      - name: is_activity
+        description: Whether the event is considered an activity or not
+        tests:
+          - not_null
+
+      - name: is_visitor
+        description: Whether the event performer is considered a visitor or registered user
+        tests:
+          - not_null
+
+      - name: page_path
+        description: Path of the page
+
+      - name: page_title
+        description: Title of the page
+
+      - name: utm_source
+        description: UTM source of the page
+
+      - name: utm_campaign
+        description: UTM campaign of the page
+
+      - name: utm_term
+        description: UTM term of the page
+
+      - name: utm_content
+        description: UTM content of the page
+
+      - name: utm_medium
+        description: UTM medium of the page
+
+
+  - name: dim_expert
+    description: "This table contains details about experts including personal information, rates, and statuses."
+    columns:
+      - name: id
+        description: "A unique identifier for each expert."
+        tests:
+          - unique
+          - not_null
+
+      - name: uuid
+        description: "A unique universal identifier for each expert."
+        tests:
+          - unique
+          - not_null
+
+      - name: first_name
+        description: "The first name of the expert."
+        tests:
+          - not_null
+
+      - name: last_name
+        description: "The last name of the expert."
+        tests:
+          - not_null
+
+      - name: full_name
+        description: "The full name of the expert."
+        tests:
+          - not_null
+
+      - name: email
+        description: "The email address of the expert."
+        tests:
+          - not_null
+          - unique
+
+      - name: phone_number
+        description: "The phone number of the expert."
+        tests:
+          - not_null
+
+      - name: schedule_link
+        description: "A link to the expert's schedule."
+
+      - name: expert_type
+        description: "The type of expert."
+        tests:
+          - accepted_values:
+              values: ['Human', 'Bot'] 
+
+      - name: hourly_rate
+        description: "The hourly rate charged by the expert."
+
+      - name: multiplier
+        description: "A multiplier factor for calculating rates under certain conditions."
+
+      - name: onboarding_hours
+        description: "The number of hours dedicated to onboarding."
+
+      - name: pathway_rate
+        description: "Special rate for certain pathways."
+
+      - name: supervisee_rate
+        description: "Rate for supervisee sessions."
+
+      - name: supervisor_rate
+        description: "Rate for supervisor sessions."
+
+      - name: currency
+        description: "The currency in which rates are calculated."
+
+      - name: contract_status
+        description: "The current contract status of the expert."
+        tests:
+          - accepted_values:
+              values: ['Active', 'Inactive']
+
+      - name: created_at
+        description: "The timestamp when the expert record was created."
+        tests:
+          - not_null
+
+      - name: updated_at
+        description: "The timestamp when the expert record was last updated."
+        tests:
+          - not_null
+
+      - name: is_deleted
+        description: "A boolean indicating if the expert record has been logically deleted."
+        tests:
+          - not_null
+
+      - name: fivetran_synced_at
+        description: "The timestamp of the last sync with Fivetran."
+        tests:
+          - not_null
+
+
+  - name: dim_member
+    description: "This table contains details about members, including personal information, their status within the system, and their association with experts."
+    columns:
+      - name: id
+        description: "A unique identifier for each member."
+        tests:
+          - unique
+          - not_null
+
+      - name: uuid
+        description: "A unique universal identifier for each member."
+        tests:
+          - unique
+          - not_null
+
+      - name: first_name
+        description: "The first name of the member."
+        tests:
+          - not_null
+
+      - name: last_name
+        description: "The last name of the member."
+        tests:
+          - not_null
+
+      - name: full_name
+        description: "The full name of the member."
+        tests:
+          - not_null
+
+      - name: gender
+        description: "The gender of the member."
+
+      - name: email
+        description: "The email address of the member."
+        tests:
+          - not_null
+          - unique
+
+      - name: phone_number
+        description: "The phone number of the member."
+
+      - name: expert_id
+        description: "The unique identifier for the associated expert."
+        tests:
+          - not_null
+
+      - name: expert_first_name
+        description: "The first name of the associated expert."
+        tests:
+          - not_null
+
+      - name: expert_last_name
+        description: "The last name of the associated expert."
+        tests:
+          - not_null
+
+      - name: expert_full_name
+        description: "The full name of the associated expert."
+        tests:
+          - not_null
+
+      - name: member_status
+        description: "The current status of the member."
+        tests:
+          - accepted_values:
+              values: ['Active', 'Inactive', 'Disabled', 'Verified', 'Unverified', 'Verification Pending']
+
+      - name: member_app_status
+        description: "The status of the member within the application."
+        tests:
+          - accepted_values:
+              values: ['Active', 'Inactive', 'Onboarding']
+
+      - name: member_funnel
+        description: "The funnel stage of the member."
+        tests:
+          - accepted_values:
+              values: ['Tiers_v1', 'Church']        
+
+      - name: member_push_notification_status
+        description: "The status of push notifications for the member."
+        tests:
+          - accepted_values:
+              values: ['Unknown', 'Denied', 'Accepted']
+
+      - name: member_tier
+        description: "The membership tier of the member."
+        tests:
+          - accepted_values:
+              values: ['Digital First', 'Hybrid', 'Expert-led Journey', 'Couples', 'Couples biweekly']
+
+      - name: primary_member_id
+        description: "The unique identifier for the primary member, in case of linked accounts."
+
+      - name: module_id
+        description: "The unique identifier for the module assigned to the member."
+
+      - name: account_id
+        description: "The unique identifier for the member's account."
+
+      - name: member_timezone
+        description: "The timezone of the member."
+
+      - name: member_country
+        description: "The country of the member."
+
+      - name: subscription_created_at
+        description: "The datetime when member created a subscription."
+
+      - name: subscription_billing_type
+        description: "Whether the subscription is monthly or 28-day"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Monthly', '28-day']
+          
+      - name: initial_utm_campaign
+        description: UTM campaign we first see for the member/visitor
+
+      - name: initial_utm_content
+        description: UTM content we first see for the member/visitor
+
+      - name: initial_utm_medium
+        description: UTM medium we first see for the member/visitor
+
+      - name: initial_utm_source
+        description: UTM source we first see for the member/visitor
+
+      - name: utm_campaign
+        description: Last UTM campaign we see for the member/visitor before first subscription
+
+      - name: utm_content
+        description: Last UTM content we see for the member/visitor before first subscription
+
+      - name: utm_medium
+        description: Last UTM medium we see for the member/visitor before first subscription
+
+      - name: utm_source
+        description: Last UTM source we see for the member/visitor before first subscription
+
+      - name: created_at
+        description: "The timestamp when the member record was created."
+        tests:
+          - not_null
+
+      - name: updated_at
+        description: "The timestamp when the member record was last updated."
+        tests:
+          - not_null
+
+      - name: is_deleted
+        description: "A boolean indicating if the member record has been logically deleted."
+        tests:
+          - not_null
+
+      - name: fivetran_synced_at
+        description: "The timestamp of the last sync with Fivetran."
+        tests:
+          - not_null
+
+
+  - name: fct_webapp_sessions
+    description: "This table logs sessions within the web application, tracking their status, type, and relationships to members and experts."
+    columns:
+      - name: id
+        description: "A unique identifier for each session."
+        tests:
+          - unique
+          - not_null
+
+      - name: uuid
+        description: "A unique universal identifier for each session."
+        tests:
+          - unique
+          - not_null
+
+      - name: member_id
+        description: "The unique identifier for the member associated with the session."
+
+      - name: expert_id
+        description: "The unique identifier for the expert associated with the session."
+
+      - name: parent_session_id
+        description: "The unique identifier for the parent session, if applicable."
+
+      - name: session_status
+        description: "The status of the session."
+        tests:
+          - accepted_values:
+              values: ['Ongoing', 'Ended', 'Scheduled', 'Canceled', 'Rescheduled']
+
+      - name: session_type
+        description: "The type of the session."
+        tests:
+          - accepted_values:
+              values: ['Chat', 'Habit Tracking', 'Checkin', 'Welcome', 'Individual', 'Group', 'Supervisor', 'Supervised']
+
+      - name: session_ended_at
+        description: "The timestamp when the session ended."
+
+      - name: next_session_at
+        description: "The timestamp for the next scheduled session, if any."
+
+      - name: next_session_event_id
+        description: "The unique identifier for the event of the next session."
+
+      - name: next_session_invitee_id
+        description: "The unique identifier for the invitee of the next session."
+
+      - name: created_at
+        description: "The timestamp when the session record was created."
+        tests:
+          - not_null
+
+      - name: updated_at
+        description: "The timestamp when the session record was last updated."
+        tests:
+          - not_null
+
+      - name: is_deleted
+        description: "A boolean indicating if the session record has been logically deleted."
+        tests:
+          - not_null
+
+      - name: fivetran_synced_at
+        description: "The timestamp of the last sync with Fivetran."
+        tests:
+          - not_null
+
+  - name: fct_daily_ad_spend
+    description: This table shows total ad spend by date
+    columns:
+      - name: unique_id
+        description: Unique identifier of the record
+        tests:
+          - unique
+          - not_null  
+
+      - name: date
+        description: Date of the ad spend
+        tests:
+          - not_null  
+
+      - name: utm_source
+        description: Date of the ad spend
+        tests:
+          - not_null            
+
+      - name: utm_campaign
+        description: Date of the ad spend
+        tests:
+          - not_null                     
+
+      - name: utm_medium
+        description: Date of the ad spend
+        tests:
+          - not_null            
+
+      - name: total_cost
+        description: Total cost of ad spend in that day
+        tests:
+          - not_null 
+
+
+  - name: fct_invoices
+    description: "This table contains detailed invoice records, including billing information, customer details, charge and subscription data, and various timestamps indicating the lifecycle of an invoice."
+    columns:
+      - name: id
+        description: "Unique identifier for each invoice record."
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_id
+        description: "Identifier for the customer associated with the invoice."
+        tests:
+          - not_null        
+
+      - name: charge_id
+        description: "Unique identifier for the charge associated with the invoice."
+
+      - name: subscription_id
+        description: "Unique identifier for the subscription associated with the invoice."
+
+      - name: billing
+        description: "Billing mode used for the invoice."
+
+      - name: billing_reason
+        description: "Reason why the invoice was generated."
+
+      - name: currency
+        description: "Currency in which the invoice is denominated."
+
+      - name: invoice_number
+        description: "The invoice number."
+
+      - name: invoice_status
+        description: "Current status of the invoice."
+
+      - name: invoice_amount_due
+        description: "The total amount due on the invoice."
+
+      - name: invoice_amount_paid
+        description: "The amount that has been paid towards the invoice."
+
+      - name: invoice_amount_remaining
+        description: "The remaining amount that is due on the invoice."
+
+      - name: invoice_subtotal
+        description: "The subtotal of the invoice before taxes and adjustments."
+
+      - name: invoice_total
+        description: "The total amount of the invoice after taxes and adjustments."
+
+      - name: is_attempted
+        description: "Flag indicating whether a payment attempt has been made for this invoice."
+
+      - name: is_auto_advance
+        description: "Flag indicating whether the invoice will automatically advance to the next billing period."
+
+      - name: is_deleted
+        description: "Flag indicating whether the invoice record has been marked as deleted."
+
+      - name: is_livemode
+        description: "Flag indicating whether the invoice was created in live mode."
+
+      - name: is_paid
+        description: "Flag indicating whether the invoice has been fully paid."
+
+      - name: is_test
+        description: "Flag indicating whether the invoice was created in test mode."
+
+      - name: created_at
+        description: "Timestamp when the invoice was created."
+        tests:
+          - not_null        
+
+      - name: invoiced_at
+        description: "Timestamp when the invoice was issued."
+
+      - name: last_updated_at
+        description: "The last timestamp when the invoice was updated."
+
+      - name: customer_email
+        description: "Email address of the customer."
+
+      - name: customer_name
+        description: "Name of the customer."
+
+      - name: customer_uuid
+        description: "Unique identifier for the customer."
+
+      - name: customer_funnel
+        description: "The funnel through which the customer was acquired."
+
+      - name: customer_funnel_start
+        description: "Starting point of the customer funnel."
+
+      - name: customer_funnel_id
+        description: "Unique identifier for the customer's funnel."
+
+      - name: customer_coupon
+        description: "Coupon code used by the customer."
+
+      - name: customer_rfsn
+        description: "Referral source for the customer."
+
+      - name: customer_rfsn_v4_aid
+        description: "Version 4 aid of the customer referral source."
+
+      - name: customer_rfsn_v4_cs
+        description: "Version 4 cs of the customer referral source."
+
+      - name: customer_rfsn_v4_id
+        description: "Version 4 id of the customer referral source."
+
+      - name: customer_tier_type
+        description: "Tier type of the customer."
+
+      - name: customer_utm_campaign
+        description: "UTM campaign parameter for the customer."
+
+      - name: customer_utm_content
+        description: "UTM content parameter for the customer."
+
+      - name: customer_utm_medium
+        description: "UTM medium parameter for the customer."
+
+      - name: customer_utm_source
+        description: "UTM source parameter for the customer."
+
+      - name: customer_is_deleted
+        description: "Flag indicating whether the customer has been marked as deleted."
+
+      - name: charge_billing_country
+        description: "Billing country associated with the charge."
+
+      - name: charge_description
+        description: "Description of the charge."
+
+      - name: charge_failure_code
+        description: "Failure code associated with the charge if it failed."
+
+      - name: charge_failure_message
+        description: "Failure message associated with the charge if it failed."
+
+      - name: charge_outcome_network_status
+        description: "Network status of the charge outcome."
+
+      - name: charge_outcome_seller_message
+        description: "Seller message related to the charge outcome."
+
+      - name: charge_status
+        description: "Status of the charge."
+
+      - name: charge_amount
+        description: "Amount of the charge."
+
+      - name: charge_amount_refunded
+        description: "Amount refunded from the charge."
+
+      - name: charge_is_captured
+        description: "Flag indicating whether the charge has been captured."
+
+      - name: charge_is_livemode
+        description: "Flag indicating whether the charge was created in live mode."
+
+      - name: charge_is_paid
+        description: "Flag indicating whether the charge has been paid."
+
+      - name: charge_is_refunded
+        description: "Flag indicating whether the charge has been refunded."
+
+      - name: subscription_created_at
+        description: "Timestamp when the subscription was created."
+
+      - name: subscription_trial_started_at
+        description: "Timestamp when the trial period for the subscription started."
+
+      - name: subscription_trial_ended_at
+        description: "Timestamp when the trial period for the subscription ended."
+
+      - name: subscription_started_at
+        description: "Timestamp when the subscription officially started."
+
+      - name: subscription_current_period_start_at
+        description: "Timestamp marking the start of the current billing period for the subscription."
+
+      - name: subscription_current_period_end_at
+        description: "Timestamp marking the end of the current billing period for the subscription."
+
+      - name: subscription_status
+        description: "Current status of the subscription."
+
+      - name: subscription_canceled_at
+        description: "Timestamp when the subscription was canceled."
+
+      - name: subscription_expired_at
+        description: "Timestamp when the subscription expired."
+
+      - name: subscription_is_expired_at_period_end
+        description: "Flag indicating whether the subscription is set to expire at the end of the current period."
+
+      - name: subscription_ended_at
+        description: "Timestamp when the subscription ended."
+
+      - name: refund_id
+        description: "Unique identifier for the refund record."
+        tests:
+          - unique
+
+      - name: refund_currency
+        description: "Currency in which the refund was issued."
+
+      - name: refund_description
+        description: "Description of the refund."
+
+      - name: refund_failure_reason
+        description: "Reason for refund failure, if applicable."
+
+      - name: refund_reason
+        description: "Reason for issuing the refund."
+
+      - name: refund_status
+        description: "Current status of the refund (e.g., pending, completed, failed)."
+
+      - name: refund_amount
+        description: "Amount of the refund issued."
+
+      - name: refund_initiated_at
+        description: "Timestamp when the refund was initiated."
+
+      - name: refund_type
+        description: "Timestamp when the refund was initiated."
+        tests:
+          - accepted_values:
+              values: ['Partial', 'Full']
+
+      - name: dispute_id
+        description: "Unique identifier for the dispute record."
+        tests:
+          - unique
+
+      - name: dispute_currency
+        description: "Currency in which the dispute amount is denominated."
+
+      - name: dispute_reason
+        description: "Reason for the dispute."
+
+      - name: dispute_status
+        description: "Current status of the dispute (e.g., pending, resolved, closed)."
+
+      - name: dispute_amount
+        description: "Amount involved in the dispute."
+
+      - name: dispute_created_at
+        description: "Timestamp when the dispute was created."        
+
+
+  - name: fct_subscriptions
+    description: "This table contains detailed records of subscriptions, including subscription items, plans, products, customer details, and subscription lifecycle timestamps."
+    columns:
+      - name: subscription_id
+        description: "Unique identifier for each subscription."
+        tests:
+          - unique
+          - not_null
+
+      - name: subscription_item_id
+        description: "Identifier for the item within the subscription."
+
+      - name: plan_id
+        description: "Identifier for the plan associated with the subscription."
+
+      - name: product_id
+        description: "Identifier for the product associated with the subscription."
+
+      - name: customer_id
+        description: "Identifier for the customer who owns the subscription."
+        tests:
+          - not_null        
+
+      - name: subscription_created_at
+        description: "Timestamp when the subscription was created."
+        tests:
+          - not_null        
+
+      - name: subscription_trial_started_at
+        description: "Timestamp when the trial period for the subscription started."
+
+      - name: subscription_trial_ended_at
+        description: "Timestamp when the trial period for the subscription ended."
+
+      - name: subscription_started_at
+        description: "Timestamp when the subscription officially started."
+
+      - name: subscription_current_period_start_at
+        description: "Timestamp marking the start of the current billing period for the subscription."
+
+      - name: subscription_current_period_end_at
+        description: "Timestamp marking the end of the current billing period for the subscription."
+
+      - name: subscription_status
+        description: "Current status of the subscription."
+
+      - name: subscription_canceled_at
+        description: "Timestamp when the subscription was canceled."
+
+      - name: subscription_expired_at
+        description: "Timestamp when the subscription expired."
+
+      - name: subscription_is_expired_at_period_end
+        description: "Flag indicating whether the subscription is set to expire at the end of the current period."
+
+      - name: subscription_ended_at
+        description: "Timestamp when the subscription ended."
+
+      - name: subscription_pause_collection_behavior
+        description: "Subscription pause behavior"
+
+      - name: subscription_pause_collection_resumes_at
+        description: "Subscription pause resuming timestamp"
+
+      - name: customer_email
+        description: "Email address of the customer."
+
+      - name: customer_name
+        description: "Name of the customer."
+
+      - name: customer_uuid
+        description: "Unique identifier for the customer."
+
+      - name: customer_funnel
+        description: "The funnel through which the customer was acquired."
+
+      - name: customer_funnel_start
+        description: "Starting point of the customer funnel."
+
+      - name: customer_funnel_id
+        description: "Unique identifier for the customer's funnel."
+
+      - name: customer_coupon
+        description: "Coupon code used by the customer."
+
+      - name: customer_rfsn
+        description: "Referral source for the customer."
+
+      - name: customer_rfsn_v4_aid
+        description: "Version 4 aid of the customer referral source."
+
+      - name: customer_rfsn_v4_cs
+        description: "Version 4 cs of the customer referral source."
+
+      - name: customer_rfsn_v4_id
+        description: "Version 4 id of the customer referral source."
+
+      - name: customer_tier_type
+        description: "Tier type of the customer."
+
+      - name: customer_utm_campaign
+        description: "UTM campaign parameter for the customer."
+
+      - name: customer_utm_content
+        description: "UTM content parameter for the customer."
+
+      - name: customer_utm_medium
+        description: "UTM medium parameter for the customer."
+
+      - name: customer_utm_source
+        description: "UTM source parameter for the customer."
+
+      - name: customer_is_deleted
+        description: "Flag indicating whether the customer has been marked as deleted."
+
+      - name: plan_duration
+        description: "Duration of the plan."
+
+      - name: plan_name
+        description: "Name of the plan."
+
+      - name: plan_trial_period_days
+        description: "Number of trial period days offered with the plan."
+
+      - name: plan_is_active
+        description: "Flag indicating whether the plan is currently active."
+
+      - name: product_name
+        description: "Name of the product associated with the subscription."
+
+      - name: product_description
+        description: "Description of the product."
+
+      - name: product_is_active
+        description: "Flag indicating whether the product is currently active."
+
+
+  - name: fct_wistia_events
+    description: "This table records events related to media views within Wistia, tracking detailed viewer interaction data, including geographical location, device, and media information."
+    columns:
+      - name: visitor_id
+        description: "Unique identifier for the visitor who interacted with the media."
+
+      - name: media_id
+        description: "Identifier for the media that was interacted with."
+
+      - name: event_id
+        description: "Unique identifier for the specific event."
+
+      - name: received_at
+        description: "Timestamp when the event was received."
+
+      - name: ip
+        description: "IP address of the visitor."
+
+      - name: country
+        description: "Country from which the event was generated."
+
+      - name: region
+        description: "Region from which the event was generated."
+
+      - name: city
+        description: "City from which the event was generated."
+
+      - name: org
+        description: "Organization associated with the IP address of the visitor."
+
+      - name: email
+        description: "Email address of the visitor, if available."
+
+      - name: embed_url
+        description: "URL of the page where the media was embedded."
+
+      - name: conversion_type
+        description: "Type of conversion event triggered by the visitor."
+
+      - name: conversion_data
+        description: "Data related to the conversion event."
+
+      - name: iframe_heatmap_url
+        description: "URL of the iframe heatmap generated for the media view."
+
+      - name: browser
+        description: "Browser used by the visitor."
+
+      - name: browser_version
+        description: "Version of the browser used by the visitor."
+
+      - name: platform
+        description: "Operating system platform of the visitor's device."
+
+      - name: media_name
+        description: "Name of the media."
+
+      - name: media_url
+        description: "URL of the media."
+
+      - name: thumbnail_url
+        description: "URL of the media thumbnail image."
+
+      - name: thumbnail_contentType
+        description: "Content type of the thumbnail image."
+
+      - name: thumbnail_type
+        description: "Type of the thumbnail image."
+
+      - name: lat
+        description: "Latitude coordinate from which the event was generated."
+
+      - name: lon
+        description: "Longitude coordinate from which the event was generated."
+
+      - name: percent_viewed
+        description: "Percentage of the media that was viewed."
+
+      - name: is_mobile
+        description: "Flag indicating whether the event was generated from a mobile device."
+
+      - name: thumbnail_width
+        description: "Width of the thumbnail image."
+
+      - name: thumbnail_height
+        description: "Height of the thumbnail image."
+
+      - name: thumbnail_fileSize
+        description: "File size of the thumbnail image."
+
+      - name: last_updated_at
+        description: "The last timestamp when the event record was updated."
+
+      - name: uuid
+        description: "Unique identifier for the member."
+
+
+  - name: fct_questionnaire_answers
+    description: "A table containing responses to various questionnaire forms with detailed metadata."
+    columns:
+      - name: unique_sk
+        description: "A unique surrogate key for each record."
+        tests:
+          - unique
+          - not_null
+
+      - name: survey_started_at
+        description: "Timestamp marking when the survey was started."
+        tests:
+          - not_null
+
+      - name: surver_submitted_at
+        description: "Timestamp marking when the survey was submitted."
+
+      - name: participant_email
+        description: "Email address of the survey participant."
+
+      - name: field_id
+        description: "Identifier for the specific field in the form."
+
+      - name: form_id
+        description: "Identifier for the form."
+
+      - name: form_title
+        description: "Title of the form."
+
+      - name: form_type
+        description: "Type of the form."
+
+      - name: workspace_name
+        description: "Name of the workspace where the form is hosted."
+
+      - name: question_title
+        description: "Title of the question asked in the form."
+
+      - name: question_type
+        description: "Type of the question."
+
+      - name: response_id
+        description: "Identifier for the participant's response."
+
+      - name: answer_type
+        description: "Type of answer provided."
+
+      - name: generalized_answer
+        description: "Generalized form of the answer."
+
+      - name: date_answer
+        description: "Date form of the answer when applicable."
+
+      - name: text_answer
+        description: "Textual answer provided by the participant."
+
+      - name: number_answer
+        description: "Numerical answer provided by the participant."
+
+      - name: true_false_answer
+        description: "Boolean answer provided by the participant."
+
+      - name: phone_number_answer
+        description: "Phone number provided by the participant if applicable."
+
+      - name: email_answer
+        description: "Email answer provided by the participant."
+
+      - name: url_answer
+        description: "URL provided by the participant as an answer."
+
+      - name: file_url_answer
+        description: "File URL provided by the participant as an answer."
+
+      - name: choice_texts
+        description: "Texts of the choices provided in a multiple-choice question."
+
+      - name: choice_answers
+        description: "Answers selected by the participant in a multiple-choice question."
+
+      - name: aid
+        description: "Assistance identifier if applicable."
+
+      - name: expert_id
+        description: "Identifier of the expert or admin who might have interacted with the form."
+
+      - name: fbclid
+        description: "Facebook Click Identifier for tracking sources of traffic."
+
+      - name: funnelid
+        description: "Identifier for the marketing or sales funnel."
+
+      - name: gclid
+        description: "Google Click Identifier for tracking AdWords campaigns."
+
+      - name: partner_uuid
+        description: "UUID for the partner involved in the form's process."
+
+      - name: primary_member_id
+        description: "Primary member identifier related to this questionnaire."
+
+      - name: prolific_pid
+        description: "Prolific Participant ID for surveys conducted through Prolific."
+
+      - name: random_uuid
+        description: "A random UUID generated for the session or user."
+
+      - name: rfsn_v_4_aid
+        description: "Refersion version 4 affiliate identifier."
+
+      - name: rfsn_v_4_id
+        description: "Refersion version 4 identifier."
+
+      - name: session_id
+        description: "Session identifier for the user's interaction with the form."
+
+      - name: study_id
+        description: "Identifier for the study if this questionnaire is part of a research study."
+
+      - name: ttclid
+        description: "TikTok Click Identifier for tracking ad campaigns."
+
+      - name: uuid
+        description: "Universal Unique Identifier for referencing the response uniquely."
+
+      - name: metadata_network_id
+        description: "Network ID used for identifying the network source in metadata tracking."
+
+      - name: affiliate
+        description: "Affiliate identifier or tag."
+
+      - name: church
+        description: "Church name or identifier if applicable in the context of the questionnaire."
+
+      - name: coupon
+        description: "Coupon code or identifier used by the participant."
+
+      - name: current_rfsn_lsts
+        description: "List of current Refersion values applicable."
+
+      - name: email
+        description: "Email of the participant, if different from participant_email."
+
+      - name: ending
+        description: "Details about the ending or conclusion of the questionnaire session."
+
+      - name: expert
+        description: "Expert associated with the questionnaire."
+
+      - name: expert_email
+        description: "Email of the expert associated with the form."
+
+      - name: expert_name
+        description: "Name of the expert involved."
+
+      - name: first_name
+        description: "First name of the participant."
+
+      - name: funnel_mode
+        description: "Mode of the funnel used during the questionnaire process."
+
+      - name: funnel_start
+        description: "Start timestamp of the funnel related to this questionnaire."
+
+      - name: last_name
+        description: "Last name of the participant."
+
+      - name: lead_variation
+        description: "Variation of the lead used in differentiating the form types."
+
+      - name: manager
+        description: "Manager's identifier or name who oversaw the form process."
+
+      - name: matching
+        description: "Details about the matching criteria used in the form process."
+
+      - name: member_funnel
+        description: "Details about the member's specific funnel path."
+
+      - name: name
+        description: "Full name of the participant, if provided."
+
+      - name: native_app_form_os
+        description: "Operating system of the native app from which the form was submitted."
+
+      - name: original_params
+        description: "Original parameters passed during the form submission."
+
+      - name: partner_email
+        description: "Email of the partner involved in the form's process."
+
+      - name: partner_first_name
+        description: "First name of the partner involved."
+
+      - name: partner_last_name
+        description: "Last name of the partner involved."
+
+      - name: partnerrefer
+        description: "Reference identifier of the partner."
+
+      - name: personal_email
+        description: "Personal email address of the participant."
+
+      - name: phone
+        description: "Phone number of the participant."
+
+      - name: price
+        description: "Price or cost associated with the questionnaire or its service."
+
+      - name: program
+        description: "Program or initiative this questionnaire is part of."
+
+      - name: quick_survey_funnel
+        description: "Details about the quick survey funnel used."
+
+      - name: rfsn
+        description: "Refersion identifier, if applicable."
+
+      - name: rfsn_src
+        description: "Source of the Refersion identifier."
+
+      - name: rfsn_v_4_cart_type
+        description: "Cart type in Refersion version 4."
+
+      - name: rfsn_v_4_cs
+        description: "Customer service tag or identifier in Refersion version 4."
+
+      - name: show_onboarding_app
+        description: "Flag indicating whether the onboarding was shown in the app."
+
+      - name: skip
+        description: "Details if any part of the questionnaire was skipped."
+
+      - name: source
+        description: "Source from where the participant was referred."
+
+      - name: tier_type
+        description: "Type of tier used in membership or rewards."
+
+      - name: utm_campaign
+        description: "Campaign identifier used in UTM parameters."
+
+      - name: utm_content
+        description: "Content identifier used in UTM parameters."
+
+      - name: utm_medium
+        description: "Medium identifier used in UTM parameters."
+
+      - name: utm_source
+        description: "Source identifier used in UTM parameters."
+
+      - name: utm_term
+        description: "Terms used in UTM parameters."
+
+      - name: version
+        description: "Version of the form or questionnaire used."
+
+      - name: welcome_session_done
+        description: "Indicator if the welcome session was completed."
+
+      - name: metadata_browser
+        description: "Browser information collected from the metadata."
+
+      - name: metadata_platform
+        description: "Platform information collected from the metadata."
+
+      - name: metadata_referer
+        description: "Referrer information collected from the metadata."
+
+      - name: metadata_user_agent
+        description: "User agent information collected from the metadata."
+
+      - name: token
+        description: "Token used for session or user authentication."
+
+      - name: jump_to
+        description: "Details of any jumps or skips within the form."
+
+      - name: calculated_score
+        description: "Score calculated based on responses."
+
+      - name: bark_lead
+        description: "Indicator if the lead was generated via Bark."
+
+      - name: member_uuid
+        description: "UUID of the member participating in the questionnaire."
+
+      - name: gw_cms_id
+        description: "Growthwork CMS id of the response."
+
+
+  - name: fct_video_journaling
+    description: "This table contains records of video journaling activities, including actions, experts involved, and media details."
+    columns:
+      - name: id
+        description: "The unique identifier for each record."
+        tests:
+          - not_null
+          - unique
+
+      - name: action_id
+        description: "Identifier for the action taken in the video journaling session."
+
+      - name: expert_id
+        description: "Identifier of the expert assigned to the video journaling session."
+        tests:
+          - not_null
+
+      - name: gw_cms_id
+        description: "Content management system identifier associated with the growth work."
+
+      - name: member_id
+        description: "Identifier for the member who is participating in the video journaling."
+        tests:
+          - not_null
+
+      - name: uuid
+        description: "Universal unique identifier for the video journaling session."
+        tests:
+          - not_null
+          - unique
+
+      - name: url
+        description: "URL of the video journaling session."
+
+      - name: url_hash
+        description: "Hash of the video URL for lookup efficiency and integrity checking."
+
+      - name: growthwork_type
+        description: "Type of growth work being performed in the video journaling session."
+        tests:
+          - not_null
+
+      - name: status
+        description: "Current status of the video journaling session."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['generating', 'created', 'completed', 'reviewed', 'expired']
+
+      - name: question_media_duration
+        description: "Duration of the media related to the question in seconds."
+        tests:
+          - not_null
+
+      - name: answer_media_duration
+        description: "Duration of the media related to the answer in seconds."
+        tests:
+          - not_null
+
+      - name: is_fivetran_deleted
+        description: "Flag indicating whether the record has been marked as deleted in Fivetran's sync process."
+
+      - name: is_deleted
+        description: "Flag indicating whether the record has been deleted."
+
+      - name: created_at
+        description: "Timestamp when the record was created."
+        tests:
+          - not_null
+
+      - name: deleted_at
+        description: "Timestamp when the record was deleted, if applicable."
+
+      - name: updated_at
+        description: "Timestamp when the record was last updated."
+        tests:
+          - not_null
+
+      - name: fivetran_synced_at
+        description: "Timestamp when the record was last synced by Fivetran."
+        tests:
+          - not_null
+
+  - name: dim_growthwork
+    description: "A table detailing the growth work elements, parts, and associated pathways."
+    columns:
+      - name: id
+        description: "Unique identifier for the growthwork record."
+        tests:
+          - not_null
+          - unique
+
+      - name: growthwork_id
+        description: "Identifier for the specific growthwork."
+        tests:
+          - not_null
+
+      - name: growthwork_order
+        description: "Numerical order of the growthwork within its part or module."
+        tests:
+          - not_null
+
+      - name: growthwork_title
+        description: "Title of the growthwork."
+        tests:
+          - not_null        
+
+      - name: growthwork_description
+        description: "Detailed description of what the growthwork entails."
+        tests:
+          - not_null:
+              where: "id <> '999'"        
+
+      - name: growthwork_type
+        description: "Type of growthwork (e.g., wistia, videoask, typeform)."
+        tests:
+          - not_null        
+
+      - name: growthwork_url
+        description: "URL link to the actual growthwork content."
+        tests:
+          - not_null:
+              where: "id <> '999'"         
+
+      - name: growthwork_source_id
+        description: "Media id of the actual growthwork content."
+        tests:
+          - not_null:
+              where: "id <> '999'"         
+
+      - name: part_id
+        description: "Identifier for the part that the growthwork belongs to."
+        tests:
+          - not_null        
+
+      - name: part_order
+        description: "Ordering of the part within the pathway."
+        tests:
+          - not_null        
+
+      - name: part_description
+        description: "Description of the part."
+        tests:
+          - not_null        
+
+      - name: part_goal
+        description: "Goal or objective of the part."
+        tests:
+          - not_null        
+
+      - name: pathway_id
+        description: "Identifier for the pathway that this part is a segment of."
+        tests:
+          - not_null:
+              where: "id <> '999'"          
+
+      - name: pathway_name
+        description: "Name of the pathway."
+        tests:
+          - not_null:
+              where: "id <> '999'"          
+
+      - name: pathway_description
+        description: "Description of what the pathway entails."
+        tests:
+          - not_null:
+              where: "id <> '999'"          
+
+      - name: pathway_goal
+        description: "Overall goal or objective of the pathway."
+        tests:
+          - not_null:
+              where: "id <> '999'"          
+
+      - name: pathway_length_weeks
+        description: "Duration of the pathway in weeks."
+        tests:
+          - not_null:
+              where: "id <> '999'"                  
+
+      - name: created_at
+        description: "Timestamp when the record was created."
+        tests:
+          - not_null        
+
+      - name: updated_at
+        description: "Timestamp when the record was last updated."
+        tests:
+          - not_null              
+
+
+  - name: fct_impact_actions
+    description: "A table capturing impact actions with detailed event and campaign data."
+    columns:
+      - name: id
+        description: "Unique identifier for the impact action record."
+        tests:
+          - not_null
+          - unique
+
+      - name: event_date
+        description: "Timestamp of when the event occurred."
+        tests:
+          - not_null
+
+      - name: creation_date
+        description: "Timestamp of when the action was created."
+
+      - name: locking_date
+        description: "Timestamp of when the action was locked."
+
+      - name: referring_date
+        description: "Timestamp of when the action was referred."
+
+      - name: customer_id
+        description: "Identifier for the customer involved in the action."
+
+      - name: customer_country
+        description: "Country of the customer involved in the action."
+
+      - name: campaign_id
+        description: "Identifier for the campaign associated with the action."
+
+      - name: campaign_name
+        description: "Name of the campaign associated with the action."
+
+      - name: ad_id
+        description: "Identifier for the ad associated with the action."
+
+      - name: ad_name
+        description: "Name of the ad associated with the action."
+
+      - name: ad_type
+        description: "Type of the ad associated with the action."
+
+      - name: action_type
+        description: "Type of action performed."
+
+      - name: referring_type
+        description: "Type of referring source."
+
+      - name: partner_name
+        description: "Name of the partner involved in the action."
+
+      - name: referring_domain
+        description: "Domain from which the action was referred."
+
+      - name: action_state
+        description: "State of the action."
+
+      - name: promo_code
+        description: "Promotional code used in the action, if any."
+
+      - name: expected_income
+        description: "Expected income generated from the action."
+
+      - name: partnership_cost
+        description: "Cost associated with the partnership for this action."
+
+
+  - name: fct_calendly_events
+    description: "A table capturing events scheduled through Calendly, including details about the events, experts, and status."
+    columns:
+      - name: unique_id
+        description: "Unique identifier for the record."
+        tests:
+          - unique
+          - not_null
+
+      - name: event_id
+        description: "Unique identifier for the Calendly event record."
+        tests:
+          - not_null
+
+      - name: event_name
+        description: "Name of the event scheduled through Calendly."
+
+      - name: status
+        description: "Current status of the event."
+
+      - name: location_type
+        description: "Type of location for the event."
+
+      - name: started_at
+        description: "Timestamp indicating when the event started."
+        tests:
+          - not_null
+
+      - name: ended_at
+        description: "Timestamp indicating when the event ended."
+
+      - name: expert_calendly_id
+        description: "Calendly identifier for the expert hosting the event."
+
+      - name: expert_name
+        description: "Name of the expert hosting the event."
+
+      - name: expert_email
+        description: "Email of the expert hosting the event."
+
+      - name: expert_timezone
+        description: "Timezone of the expert hosting the event."
+
+      - name: event_type_id
+        description: "Identifier for the type of event."
+
+      - name: booking_method
+        description: "Method used to book the event (e.g., instant)."
+
+      - name: event_type_name
+        description: "Name of the type of event."
+
+      - name: profile_name
+        description: "Name of the profile associated with the event."
+
+      - name: profile_type
+        description: "Type of the profile associated with the event."
+
+      - name: cancel_reason
+        description: "Reason for cancellation, if the event was canceled."
+
+      - name: canceled_by
+        description: "Identifier of who canceled the event."
+
+      - name: canceler_type
+        description: "Type of entity that canceled the event (e.g., user, admin)."
+
+      - name: is_deleted
+        description: "Boolean flag indicating whether the record has been marked as deleted."
+
+      - name: created_at
+        description: "Timestamp when the record was created."
+
+      - name: updated_at
+        description: "Timestamp when the record was last updated."
+
+      - name: fivetran_synced_at
+        description: "Timestamp for the last sync with Fivetran."
+
+  - name: fct_expert_availability_weekdays
+    description: "A table capturing the availability of experts on different weekdays, including their timezones and available slots."
+    columns:
+      - name: expert_calendly_id
+        description: "Calendly identifier for the expert."
+        tests:
+          - not_null
+
+      - name: timezone
+        description: "Timezone of the expert."
+
+      - name: expert_email
+        description: "Email of the expert."
+
+      - name: expert_name
+        description: "Name of the expert."
+
+      - name: weekday
+        description: "Day of the week for which availability is being recorded."
+        tests:
+          - not_null
+
+      - name: available_slot
+        description: "Available time slot for the expert on the specified weekday."
+
+      - name: last_updated_at
+        description: "Timestamp indicating when the availability information was last updated."
+
+
+  - name: fct_expert_compensations
+    description: "A table capturing the compensations for experts, including detailed financial data and timestamps."
+    columns:
+      - name: id
+        description: "Unique identifier for the compensation record."
+        tests:
+          - not_null
+          - unique
+
+      - name: year_month
+        description: "Year and month for which the compensation is recorded, in YYYY-MonthName format."
+
+      - name: expert_id
+        description: "Identifier for the expert receiving the compensation."
+        tests:
+          - not_null
+
+      - name: full_name
+        description: "Full name of the expert."
+
+      - name: uuid
+        description: "UUID for the compensation record."
+
+      - name: report_status
+        description: "Status of the compensation report (e.g., created, processed)."
+
+      - name: total_compensation
+        description: "Total compensation amount for the expert."
+
+      - name: total_compensation_with_overhead
+        description: "Total compensation amount including overhead costs."      
+
+      - name: is_deleted
+        description: "Boolean flag indicating whether the record has been marked as deleted."
+
+      - name: is_deleted_by_cascade
+        description: "Boolean flag indicating if the record was deleted by cascade action."
+
+      - name: created_at
+        description: "Timestamp when the record was created."
+
+      - name: updated_at
+        description: "Timestamp when the record was last updated."
+
+      - name: deleted_at
+        description: "Timestamp when the record was deleted."
+
+      - name: fivetran_synced_at
+        description: "Timestamp for the last sync with Fivetran."
+
+
+  - name: fct_content_interactions
+    description: "A table capturing user interaction events across different topics/contents."
+    columns:
+      - name: id
+        description: "Unique identifier for the record."
+        tests:
+          - not_null
+          - unique
+
+      - name: created_at
+        description: "Timestamp when the record was created."
+        tests:
+          - not_null
+
+      - name: user_id
+        description: "Identifier for the user associated with the event."
+
+      - name: event_name
+        description: "Name of the event related to the topic of the month."
+        tests:
+          - not_null        
+
+      - name: topic_id
+        description: "Identifier for the topic."
+        # tests:
+        #   - not_null        commenting for now, until fix, after that will filter the fix date and bring back the test
+
+      - name: topic_title
+        description: "Title of the topic."
+        # tests:
+        #   - not_null        commenting for now, until fix, after that will filter the fix date and bring back the test        
+
+      - name: content_id
+        description: "Identifier for the content associated with the topic."
+
+      - name: content_title
+        description: "Title of the content associated with the topic."
+
+  - name: fct_growthwork_activities
+    description: "A table capturing activities related to growthwork, including details about parts, modules, and expert and member interactions."
+    columns:
+      - name: unique_id
+        description: "Unique identifier for each growthwork activity record."
+        tests:
+          - not_null
+          - unique
+
+      - name: part_assigned_at
+        description: "Timestamp indicating when the part was assigned."
+
+      - name: expert_email
+        description: "Email of the expert associated with the growthwork activity."
+
+      - name: expert_uuid
+        description: "UUID of the expert associated with the growthwork activity."
+
+      - name: member_email
+        description: "Email of the member associated with the growthwork activity."
+
+      - name: member_uuid
+        description: "UUID of the member associated with the growthwork activity."
+
+      - name: part_id
+        description: "Identifier for the part associated with the growthwork activity."
+
+      - name: part_order
+        description: "Order of the part within the module."
+
+      - name: part_description
+        description: "Description of the part assigned in the growthwork activity."
+
+      - name: part_goal
+        description: "Goal or objective of the part assigned in the growthwork activity."
+
+      - name: module_id
+        description: "Identifier for the module that the part belongs to."
+
+      - name: module_name
+        description: "Name of the module associated with the growthwork activity."
+
+      - name: growthwork_completed_at
+        description: "Timestamp indicating when the growthwork was completed."
+
+      - name: growthwork_id
+        description: "Identifier for the specific growthwork task."
+
+      - name: growthwork_order
+        description: "Order of the growthwork within its part or module."
+
+      - name: growthwork_title
+        description: "Title of the growthwork activity."
+
+      - name: growthwork_description
+        description: "Detailed description of the growthwork activity."
+
+      - name: growthwork_type
+        description: "Type of growthwork (e.g., video, article, quiz)."
+
+      - name: is_gw_completed_before_part_assigned
+        description: "Data quality flag insuring that we can later filter the rows when gw completed before the part was assigned."
+
+
+  - name: fct_platform_events_new
+    description: "A table capturing event data including user details, device information, geolocation, and UTM parameters."
+    columns:
+      - name: id
+        description: "Unique identifier for the event."
+        tests:
+          - not_null
+          # - unique commenting temporary
+
+      - name: created_at
+        description: "Timestamp when the event was created."
+        tests:
+          - not_null
+
+      - name: user_id
+        description: "Identifier for the user associated with the event."
+
+      - name: anonymous_id
+        description: "Anonymous identifier for the user, if applicable."
+
+      - name: event_name
+        description: "Name of the event being tracked."
+
+      - name: user_email
+        description: "Email of the user associated with the event."
+
+      - name: source_platform
+        description: "Platform from which the event originated."
+        # tests:
+        #   - not_null:
+        #       where: "created_at >= '2024-10-01'" commenting temporary
+
+      - name: source_version
+        description: "Version of the platform used during the event."
+        # tests:
+        #   - not_null:
+        #       where: "created_at >= '2024-10-01'" update this when devops is ready
+
+      - name: device_user_agent
+        description: "User agent string from the device used during the event."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "NOT LIKE '%bot%'"
+
+      - name: device_type
+        description: "Type of device used during the event (e.g., mobile, desktop)."
+
+      - name: device_os
+        description: "Operating system of the device used during the event."
+
+      - name: device_version
+        description: "Operating system version of the device used during the event."
+        
+      - name: geo_country
+        description: "Country from which the event was triggered, based on geolocation."
+
+      - name: geo_state
+        description: "State or region from which the event was triggered, based on geolocation."
+
+      - name: geo_iso_code
+        description: "ISO code for the country from which the event was triggered."
+
+      - name: geo_ip
+        description: "IP address of the device from which the event was triggered."
+
+      - name: geo_locale
+        description: "Locale of the device from which the event was triggered."
+
+      - name: geo_timezone
+        description: "Timezone of the device from which the event was triggered."
+
+      - name: utm_source
+        description: "UTM parameter indicating the source of the traffic for the event."
+
+      - name: utm_medium
+        description: "UTM parameter indicating the medium of the traffic for the event."
+
+      - name: utm_campaign
+        description: "UTM parameter indicating the campaign associated with the event."
+
+      - name: payload
+        description: "JSON payload containing the raw event data not included in fixed schema."
+
+  - name: fct_product_events
+    description: "A table capturing event data including user details, device information, geolocation, and UTM parameters."
+    columns:
+      - name: id
+        description: "Unique identifier for the event."
+        tests:
+          - not_null
+          # - unique commenting temporary
+
+      - name: created_at
+        description: "Timestamp when the event was created."
+        tests:
+          - not_null
+
+      - name: user_id
+        description: "Identifier for the user associated with the event."
+
+      - name: anonymous_id
+        description: "Anonymous identifier for the user, if applicable."
+
+      - name: event_name
+        description: "Name of the event being tracked."
+
+      - name: user_email
+        description: "Email of the user associated with the event."
+
+      - name: source_platform
+        description: "Platform from which the event originated."
+
+      - name: source_version
+        description: "Version of the platform used during the event."
+
+      - name: device_user_agent
+        description: "User agent string from the device used during the event."
+
+      - name: device_type
+        description: "Type of device used during the event (e.g., mobile, desktop)."
+
+      - name: device_os
+        description: "Operating system of the device used during the event."
+
+      - name: device_version
+        description: "Operating system version of the device used during the event."
+
+      - name: geo_country
+        description: "Country from which the event was triggered, based on geolocation."
+
+      - name: geo_state
+        description: "State or region from which the event was triggered, based on geolocation."
+
+      - name: geo_iso_code
+        description: "ISO code for the country from which the event was triggered."
+
+      - name: geo_ip
+        description: "IP address of the device from which the event was triggered."
+
+      - name: geo_locale
+        description: "Locale of the device from which the event was triggered."
+
+      - name: geo_timezone
+        description: "Timezone of the device from which the event was triggered."
+
+      - name: utm_source
+        description: "UTM parameter indicating the source of the traffic for the event."
+
+      - name: utm_medium
+        description: "UTM parameter indicating the medium of the traffic for the event."
+
+      - name: utm_campaign
+        description: "UTM parameter indicating the campaign associated with the event."
+
+      - name: payload
+        description: "JSON payload containing the raw event data not included in fixed schema."
+
+  - name: fct_app_reviews
+    description: "A table capturing user reviews of the app, including ratings, review content, and metadata about the app version and platform."
+    columns:
+      - name: id
+        description: "Unique identifier for the app review."
+        tests:
+          - not_null
+          - unique
+
+      - name: created_at
+        description: "Timestamp when the review was created."
+        tests:
+          - not_null
+
+      - name: last_updated_at
+        description: "Timestamp when the review was last updated."
+
+      - name: rating
+        description: "Rating given by the user for the app, typically on a scale of 1-5."
+        tests:
+          - not_null
+
+      - name: title
+        description: "Title of the app review provided by the user."
+
+      - name: content
+        description: "Content of the app review provided by the user."
+
+      - name: country_code
+        description: "Country code representing where the user submitted the review from."
+
+      - name: app_version_string
+        description: "Version of the app the user was using when they submitted the review."
+
+      - name: platform
+        description: "Platform on which the review was submitted (e.g., iOS, Android)."
+
+  - name: fct_emotional_checkin
+    description: "A table capturing emotional check-in data, including emotions selected, timestamps, and sharing preferences with experts and members."
+    columns:
+      - name: checkin_id
+        description: "Unique identifier for the emotional check-in."
+        tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: "Identifier for the user who completed the check-in."
+
+      - name: started_at
+        description: "Timestamp indicating when the check-in process started."
+
+      - name: app_location
+        description: "Location within the app where the check-in was initiated."
+
+      - name: country
+        description: "Country from which the check-in was submitted."
+
+      - name: device_os
+        description: "Operating system of the device used for the check-in."
+
+      - name: device_version
+        description: "Version of the device's operating system."
+
+      - name: selected_at
+        description: "Timestamp indicating when the emotions were selected."
+
+      - name: suggested_emotion_1
+        description: "The first emotion suggested to the user."
+
+      - name: suggested_emotion_2
+        description: "The second emotion suggested to the user."
+
+      - name: suggested_emotion_3
+        description: "The third emotion suggested to the user."
+
+      - name: suggested_emotion_4
+        description: "The fourth emotion suggested to the user."
+
+      - name: suggested_emotion_5
+        description: "The fifth emotion suggested to the user."
+
+      - name: selected_emotion_name_1
+        description: "Name of the first emotion selected by the user."
+
+      - name: selected_emotion_name_2
+        description: "Name of the second emotion selected by the user."
+
+      - name: selected_emotion_name_3
+        description: "Name of the third emotion selected by the user."
+
+      - name: selected_emotion_type_1
+        description: "Type or category of the first emotion selected by the user."
+
+      - name: selected_emotion_type_2
+        description: "Type or category of the second emotion selected by the user."
+
+      - name: selected_emotion_type_3
+        description: "Type or category of the third emotion selected by the user."
+
+      - name: completed_at
+        description: "Timestamp indicating when the check-in process was completed."
+
+      - name: is_shared_with_expert
+        description: "Boolean flag indicating whether the check-in was shared with an expert."
+
+      - name: is_shared_with_member
+        description: "Boolean flag indicating whether the check-in was shared with another member."
+
+
+  - name: fct_non_invoiced_payments
+    description: "Fact table for non-invoiced payments, containing payment details and customer billing information."
+    columns:
+      - name: created_at
+        description: "Timestamp when the record was created."
+        tests:
+          - not_null
+      - name: id
+        description: "Unique identifier for the payment."
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Unique identifier for the customer associated with the payment."
+      - name: billing_detail_address_country
+        description: "Country associated with the billing address."
+      - name: billing_detail_email
+        description: "Email associated with the billing details."
+      - name: billing_detail_name
+        description: "Name associated with the billing details."
+      - name: currency
+        description: "Currency in which the payment was made."
+      - name: description
+        description: "Description of the payment."
+      - name: outcome_network_status
+        description: "Status of the payment network outcome."
+      - name: outcome_seller_message
+        description: "Message from the seller about the payment outcome."
+      - name: status
+        description: "Status of the payment (e.g., pending, completed)."
+      - name: payment_amount
+        description: "Total amount of the payment."
+      - name: payment_amount_refunded
+        description: "Amount refunded from the total payment."
+      - name: is_paid
+        description: "Indicator of whether the payment was successfully made."
+        tests:
+          - not_null
+      - name: is_refunded
+        description: "Indicator of whether the payment was refunded."
+        tests:
+          - not_null        

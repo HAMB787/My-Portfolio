@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: segment_native_app
+    project: ritualanalyitcs
+    dataset: native_app
+    description: This dataset contains the data sent from segment javascript connector.     
+
+    tables:
+      - name: member_nativeapp_clicked
+      - name: message_read
+      - name: member_appmessage_displayed       
+      - name: member_emotional_checkin_started
+      - name: member_emotional_checkin_completed
+      - name: member_emotion_tab_click
+      - name: member_emotional_checkin_selection
+      - name: application_opened
+      - name: application_backgrounded
+      - name: application_installed
+      - name: banner_monthlytopic_clicked    
+      - name: banner_monthlytopic_closed
+      - name: member_content_clicked
+      - name: member_content_closed
+      - name: member_content_completed
+      - name: member_partnerrequest_sent
+      - name: member_ritualrating_invited        
+      - name: member_ritualrating_closed        
+      - name: member_ritualrating_submitted        
+      - name: member_ritualrating_freetype        
+      - name: member_apprating_invite        
